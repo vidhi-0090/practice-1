@@ -83,11 +83,23 @@ body {
     text-align: center;
     width: 30px;
 }
-.form_wrapper .input_field > span > i {
+.form_wrapper .input_field > span > svg {
     padding-top: 10px;
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
-.form_wrapper .textarea_field > span > i {
+.form_wrapper .textarea_field > span > svg {
     padding-top: 10px;
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 .form_wrapper input[type="text"], .form_wrapper input[type="email"], .form_wrapper input[type="password"], .form_wrapper input[type="file"], .form_wrapper input[type="radio"], .form_wrapper textarea[type="text"] {
     width: 100%;
@@ -293,6 +305,8 @@ input[type="search"]:focus {
 .credit a {
     color: #374151  ;
 }
+
+
 @-webkit-keyframes check {
     0% {
         height: 0;

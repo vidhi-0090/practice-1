@@ -15,6 +15,13 @@ class UserController extends Controller
     {
         $data = User::find($id);
         $book = Book::where('userId',$id)->get();
+        foreach($book as $b){
+            if($b->status == 1 ){
+                $b->status = 'True';
+            }else{
+                $b->status = 'False';
+            }
+        }
         return response()->json([
             'status' => true,
             'data' => $data,

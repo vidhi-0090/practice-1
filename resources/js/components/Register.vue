@@ -30,11 +30,8 @@
                                     <div class="col_half">
                                         <div class="input_field">
                                             <span
-                                                ><i
-                                                    aria-hidden="true"
-                                                    class="fa fa-user"
-                                                ></i
-                                            ></span>
+                                                ><font-awesome-icon icon="user" />
+                                            </span>
                                             <input
                                                 type="text"
                                                 name="name"
@@ -47,11 +44,7 @@
                                     <div class="col_half">
                                         <div class="input_field">
                                             <span
-                                                ><i
-                                                    aria-hidden="true"
-                                                    class="fa fa-user"
-                                                ></i
-                                            ></span>
+                                                ><font-awesome-icon icon="user" /></span>
                                             <input
                                                 type="text"
                                                 name="last_name"
@@ -65,11 +58,7 @@
 
                                 <div class="input_field">
                                     <span
-                                        ><i
-                                            aria-hidden="true"
-                                            class="fa fa-envelope"
-                                        ></i
-                                    ></span>
+                                        ><font-awesome-icon icon="envelope" /></span>
                                     <input
                                         type="email"
                                         name="email"
@@ -80,11 +69,7 @@
                                 </div>
                                 <div class="input_field">
                                     <span
-                                        ><i
-                                            aria-hidden="true"
-                                            class="fa fa-lock"
-                                        ></i
-                                    ></span>
+                                        ><font-awesome-icon icon="lock" /></span>
                                     <input
                                         type="password"
                                         name="password"
@@ -95,11 +80,7 @@
                                 </div>
                                 <div class="input_field">
                                     <span
-                                        ><i
-                                            aria-hidden="true"
-                                            class="fa fa-lock"
-                                        ></i
-                                    ></span>
+                                        ><font-awesome-icon icon="lock" /></span>
                                     <input
                                         type="password"
                                         name="password_confirmation"
@@ -131,11 +112,7 @@
 
                                 <div class="input_field">
                                     <span
-                                        ><i
-                                            aria-hidden="true"
-                                            class="fa fa-envelope"
-                                        ></i
-                                    ></span>
+                                        ><font-awesome-icon icon="cog" /></span>
                                     <textarea
                                         type="text"
                                         name="interest"
@@ -147,11 +124,7 @@
 
                                 <div class="input_field">
                                     <span
-                                        ><i
-                                            aria-hidden="true"
-                                            class="fa fa-envelope"
-                                        ></i
-                                    ></span>
+                                        ><font-awesome-icon icon="camera" /></span>
                                     <input
                                         type="file"
                                         name="image"

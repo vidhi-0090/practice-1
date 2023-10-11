@@ -47,7 +47,10 @@
                     </option>
                     <option value="4">00 Pages Books</option>
                     <option value="6">Released Year 2015 & 2001</option>
-
+                    <option value="7">Sort By Category</option>
+                    <option value="8">Sort By Released Year</option>
+                    <option value="9">Sort By Book Author</option>
+                    <option value="10">Sort By Book Price</option>
                 </select>
             </div>
             <input
@@ -199,11 +202,16 @@
                         >
                             {{ data.released_year }}
                         </td>
-                        <td
-                            class=""
-                            style="border: 1px solid black; padding: 5px"
-                        >
-                            {{ data.status }}
+                        <td style="border: 1px solid black; padding: 5px">
+                            <p
+                                :class="{
+                                    'status-true-class': data.status === 'True',
+                                    'status-false-class':
+                                        data.status === 'False',
+                                }"
+                            >
+                                {{ data.status }}
+                            </p>
                         </td>
                         <td
                             class=""
@@ -250,10 +258,7 @@
             <br />
             <br />
             <div class="select_option">
-                <select
-                    id="bookPages"
-                    placeholder="Filters"
-                >
+                <select id="bookPages" placeholder="Filters">
                     <option disabled>Filters</option>
                     <option selected value="5">Show All Data</option>
                     <option value="1">More Than 100 Pages</option>
@@ -263,7 +268,10 @@
                     </option>
                     <option value="4">00 Pages Books</option>
                     <option value="6">Released Year 2015 & 2001</option>
-
+                    <option value="7">Sort By Category</option>
+                    <option value="8">Sort By Released Year</option>
+                    <option value="9">Sort By Book Author</option>
+                    <option value="10">Sort By Book Price</option>
                 </select>
             </div>
             <!-- <select
@@ -310,7 +318,19 @@
     <Teleport to="body">
         <!-- use the modal component, pass in the prop -->
         <modal :show="showModal" @close="showModal = false" id="showModel">
-            <template #header> </template>
+            <template #header>
+                <button
+                    type="button"
+                    style="
+                        float: right;
+                        border: 1px solid #cccccc;
+                        padding: 8px 10px;
+                    "
+                    @click="closeModal()"
+                >
+                    X
+                </button>
+            </template>
             <template #body>
                 <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
                     <div class="form_wrapper">
@@ -333,11 +353,8 @@
                                     <form @submit.prevent="saveData()">
                                         <div class="input_field">
                                             <span
-                                                ><i
-                                                    aria-hidden="true"
-                                                    class="fa fa-envelope"
-                                                ></i
-                                            ></span>
+                                                ><font-awesome-icon icon="book"
+                                            /></span>
                                             <input
                                                 type="text"
                                                 name="name"
@@ -350,11 +367,9 @@
                                             <div class="col_half">
                                                 <div class="input_field">
                                                     <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
+                                                        ><font-awesome-icon
+                                                            icon="folder-open"
+                                                    /></span>
                                                     <input
                                                         type="text"
                                                         name="no_of_page"
@@ -372,11 +387,9 @@
                                             <div class="col_half">
                                                 <div class="input_field">
                                                     <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
+                                                        ><font-awesome-icon
+                                                            icon="user"
+                                                    /></span>
                                                     <input
                                                         type="text"
                                                         name="author"
@@ -394,11 +407,9 @@
                                             <div class="col_half">
                                                 <div class="input_field">
                                                     <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
+                                                        ><font-awesome-icon
+                                                            icon="bars"
+                                                    /></span>
                                                     <input
                                                         type="text"
                                                         name="category"
@@ -414,11 +425,9 @@
                                             <div class="col_half">
                                                 <div class="input_field">
                                                     <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
+                                                        ><font-awesome-icon
+                                                            icon="inr"
+                                                    /></span>
                                                     <input
                                                         type="text"
                                                         name="price"
@@ -436,11 +445,9 @@
                                             <div class="col_half">
                                                 <div class="input_field">
                                                     <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
+                                                        ><font-awesome-icon
+                                                            icon="calendar"
+                                                    /></span>
                                                     <input
                                                         type="text"
                                                         name="released_year"
@@ -457,18 +464,32 @@
                                             </div>
                                             <div class="col_half">
                                                 <div class="input_field">
-                                                    <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
-                                                    <input
-                                                        type="text"
-                                                        name="status"
-                                                        v-model="form.status"
-                                                        placeholder="Status"
-                                                    />
+                                                    <lable style="color:#6e7582;"
+                                                        >Status</lable
+                                                    >
+                                                    <label
+                                                        style="
+                                                            margin-left: 10px;
+                                                        "
+                                                        class="relative inline-flex items-center mb-5 cursor-pointer"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            value="true"
+                                                            class="sr-only peer"
+                                                            name="status"
+                                                            v-model="
+                                                                form.status
+                                                            "
+                                                        />
+                                                        <div
+                                                            class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gray-300 dark:peer-focus:ring-gray-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-gray-800"
+                                                        ></div>
+                                                        <span
+                                                            class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                        ></span>
+                                                    </label>
+
                                                     <p
                                                         style="color: red"
                                                         id="status"
@@ -478,11 +499,9 @@
                                         </div>
                                         <div class="input_field">
                                             <span
-                                                ><i
-                                                    aria-hidden="true"
-                                                    class="fa fa-envelope"
-                                                ></i
-                                            ></span>
+                                                ><font-awesome-icon
+                                                    icon="address-card"
+                                            /></span>
                                             <input
                                                 type="text"
                                                 name="description"
@@ -514,7 +533,19 @@
             @close="showEditModal = false"
             id="showEditModal"
         >
-            <template #header> </template>
+            <template #header>
+                <button
+                    type="button"
+                    style="
+                        float: right;
+                        border: 1px solid #cccccc;
+                        padding: 8px 10px;
+                    "
+                    @click="closeModal()"
+                >
+                    X
+                </button>
+            </template>
             <template #body>
                 <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
                     <div class="form_wrapper">
@@ -537,11 +568,9 @@
                                     <form @submit.prevent="editData()">
                                         <div class="input_field">
                                             <span
-                                                ><i
-                                                    aria-hidden="true"
-                                                    class="fa fa-envelope"
-                                                ></i
-                                            ></span>
+                                                ><font-awesome-icon
+                                                    icon="certificate"
+                                            /></span>
                                             <input
                                                 type="text"
                                                 name="bookId"
@@ -557,11 +586,8 @@
 
                                         <div class="input_field">
                                             <span
-                                                ><i
-                                                    aria-hidden="true"
-                                                    class="fa fa-envelope"
-                                                ></i
-                                            ></span>
+                                                ><font-awesome-icon icon="book"
+                                            /></span>
                                             <input
                                                 type="text"
                                                 name="name"
@@ -574,11 +600,9 @@
                                             <div class="col_half">
                                                 <div class="input_field">
                                                     <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
+                                                        ><font-awesome-icon
+                                                            icon="folder-open"
+                                                    /></span>
                                                     <input
                                                         type="text"
                                                         name="no_of_page"
@@ -594,11 +618,9 @@
                                             <div class="col_half">
                                                 <div class="input_field">
                                                     <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
+                                                        ><font-awesome-icon
+                                                            icon="user"
+                                                    /></span>
                                                     <input
                                                         type="text"
                                                         name="author"
@@ -616,11 +638,9 @@
                                             <div class="col_half">
                                                 <div class="input_field">
                                                     <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
+                                                        ><font-awesome-icon
+                                                            icon="bars"
+                                                    /></span>
                                                     <input
                                                         type="text"
                                                         name="category"
@@ -636,11 +656,9 @@
                                             <div class="col_half">
                                                 <div class="input_field">
                                                     <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
+                                                        ><font-awesome-icon
+                                                            icon="inr"
+                                                    /></span>
                                                     <input
                                                         type="text"
                                                         name="price"
@@ -658,11 +676,9 @@
                                             <div class="col_half">
                                                 <div class="input_field">
                                                     <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
+                                                        ><font-awesome-icon
+                                                            icon="calendar"
+                                                    /></span>
                                                     <input
                                                         type="text"
                                                         name="released_year"
@@ -680,11 +696,9 @@
                                             <div class="col_half">
                                                 <div class="input_field">
                                                     <span
-                                                        ><i
-                                                            aria-hidden="true"
-                                                            class="fa fa-user"
-                                                        ></i
-                                                    ></span>
+                                                        ><font-awesome-icon
+                                                            icon="sliders"
+                                                    /></span>
                                                     <input
                                                         type="text"
                                                         name="status"
@@ -700,11 +714,9 @@
                                         </div>
                                         <div class="input_field">
                                             <span
-                                                ><i
-                                                    aria-hidden="true"
-                                                    class="fa fa-envelope"
-                                                ></i
-                                            ></span>
+                                                ><font-awesome-icon
+                                                    icon="address-card"
+                                            /></span>
                                             <input
                                                 type="text"
                                                 name="description"
@@ -736,7 +748,19 @@
             @close="showDeleteModal = false"
             id="showDeleteModal"
         >
-            <template #header> </template>
+            <template #header>
+                <button
+                    type="button"
+                    style="
+                        float: right;
+                        border: 1px solid #cccccc;
+                        padding: 8px 10px;
+                    "
+                    @click="closeModal()"
+                >
+                    X
+                </button>
+            </template>
             <template #body>
                 <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
                     <div class="form_wrapper">
@@ -758,12 +782,6 @@
                                     </p>
                                     <form @submit.prevent="deleteData()">
                                         <div class="input_field">
-                                            <span
-                                                ><i
-                                                    aria-hidden="true"
-                                                    class="fa fa-envelope"
-                                                ></i
-                                            ></span>
                                             <input
                                                 type="hidden"
                                                 name="bookId"
@@ -842,7 +860,7 @@ const form = ref({
     category: "",
     price: "",
     released_year: "",
-    status: "",
+    status: "false",
     userId: "",
 });
 
@@ -857,7 +875,6 @@ const bookDataLength = ref(0);
 
 const perPage = ref(5);
 const pagination = ref({});
-
 
 const datatable = ref(null);
 
@@ -1063,6 +1080,8 @@ const deleteData = async () => {
 
 const closeModal = async () => {
     showDeleteModal.value = false;
+    showEditModal.value = false;
+    showModal.value = false;
     try {
         const user_data = await axios.get("/api/user/" + user_id);
         // console.log(user_data.data);
@@ -1090,20 +1109,52 @@ const initDataTable = () => {
             { data: "status", name: "status" },
             { data: "action", name: "action" },
         ],
+        columnDefs: [
+            {
+                targets: 8,
+                render: function (data, type, row) {
+                    if (type === "display") {
+                        var statusClass =
+                            data === "True"
+                                ? "status-true-class"
+                                : "status-false-class";
+                        if (data === "True") {
+                            return (
+                                '<p class="status-true-class" style=" width: 50%; text-align: center; border: 1px solid #427b35;  border-radius: 5px; background-color: #427b35; color: white;">' +
+                                data +
+                                "</p>"
+                            );
+                        } else {
+                            return (
+                                '<p class="status-false-class" style=" width: 50%; text-align: center; border: 1px solid #9b2925;  border-radius: 5px; background-color: #9b2925; color: white;">' +
+                                data +
+                                "</p>"
+                            );
+                        }
+                    }
+                    return data;
+                },
+            },
+            {
+                targets: 9,
+                orderable: false,
+            },
+        ],
     });
 };
 
 $(document).on("change", "#bookPages", function () {
     var testId = $(this).val();
-    datatable.value.ajax.url(baseUrl + "api/serverBooksFilter?value="+ testId).load();
+    datatable.value.ajax
+        .url(baseUrl + "api/serverBooksFilter?value=" + testId)
+        .load();
 });
 
 $(document).on("change", "#book-Pages", function () {
     var testId = $(this).val();
     $.ajax({
         type: "GET",
-        url:
-            baseUrl + "api/booksFilter/?value=" + testId,
+        url: baseUrl + "api/booksFilter/?value=" + testId,
         data: {},
         success: function (data) {
             // console.log(data)
@@ -1136,9 +1187,26 @@ onMounted(() => {
     setPage(1);
     initDataTable();
 });
-
 </script>
 
 <style lang="scss" scoped>
 @import "../../css/app.css"; /* injected */
+
+.status-true-class {
+    width: 50%;
+    text-align: center;
+    border: 1px solid #427b35;
+    border-radius: 5px;
+    background-color: #427b35;
+    color: white;
+}
+
+.status-false-class {
+    width: 50%;
+    text-align: center;
+    border: 1px solid #9b2925;
+    border-radius: 5px;
+    background-color: #9b2925;
+    color: white;
+}
 </style>

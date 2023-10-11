@@ -14,8 +14,7 @@
                     <div class="row clearfix">
                         <div class="">
                             <form @submit.prevent="login()">
-
-                                    <div class="input_field"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+                                    <div class="input_field"> <span><font-awesome-icon icon="envelope" /></span>
                                         <input type="text" name="email" placeholder="Email" v-model="email"/>
 
                                             <div v-if="v$.email.$error">
@@ -28,7 +27,7 @@
                                             </div>
 
                                     </div>
-                                    <div class="input_field"> <span><i aria-hidden="true" class="fa fa-lock"></i></span>
+                                    <div class="input_field"> <span><font-awesome-icon icon="lock" /></span>
                                         <input type="password" name="password" placeholder="Password" v-model="password"/>
 
                                             <div v-if="v$.password.$error">
