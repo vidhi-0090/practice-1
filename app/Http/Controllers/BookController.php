@@ -14,7 +14,6 @@ class BookController extends Controller
 {
     public function addBook(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
@@ -41,9 +40,12 @@ class BookController extends Controller
         $bookData->category = $request->get('category');
         $bookData->price = $request->get('price');
         $bookData->released_year = $request->get('released_year');
-        $bookData->status = $request->get('status');
-        $bookData->userId = $request->get('userId');
-        $bookData->status = true;
+        $bookData->userId = Auth::user()->id;
+        if($request->get('status') === "false"){
+            $bookData->status = 0;
+        }else if($request->get('status') === "true"){
+            $bookData->status = 1;
+        }
         $bookData->save();
 
         return response()->json([
@@ -179,9 +181,9 @@ class BookController extends Controller
         return datatables()->eloquent($query)
             ->addColumn('status', function ($book) {
                 if ($book->status == 1) {
-                    return "true";
+                    return 'True';
                 } else {
-                    return "false";
+                    return 'False';
                 }
             })
 
@@ -214,10 +216,16 @@ class BookController extends Controller
             $query->whereBetween('no_of_page', [25, 90])->Where('no_of_page', '!=', 80);
         } else if ($value == Book::Not_Pages_Books) {
             $query->Where('no_of_page', 0);
-        } else if ($value == Book::Show_All_Data) {
-
         } else if ($value == Book::Released_Year_2015_And_2001) {
             $query->whereIn('released_year', [2001, 2015]);
+        } else if ($value == Book::Sort_By_Category) {
+            $query->orderBy('category','asc');
+        } else if ($value == Book::Sort_By_Released_Year) {
+            $query->orderBy('released_year','asc');
+        } else if ($value == Book::Sort_By_Book_Author) {
+            $query->orderBy('author','asc');
+        } else if ($value == Book::Sort_By_Book_Price) {
+            $query->orderBy('price','asc');
         }
 
         $filteredBooks = $query->get();
@@ -244,15 +252,21 @@ class BookController extends Controller
             $query->Where('no_of_page', 0);
         } else if ($value == Book::Released_Year_2015_And_2001) {
             $query->whereIn('released_year', [2001, 2015]);
+        } else if ($value == Book::Sort_By_Released_Year) {
+            $query->orderBy('released_year','asc');
+        } else if ($value == Book::Sort_By_Book_Author) {
+            $query->orderBy('author','asc');
+        } else if ($value == Book::Sort_By_Book_Price) {
+            $query->orderBy('price','asc');
         }
 
         if ($query) {
             return datatables()->eloquent($query)
                 ->addColumn('status', function ($book) {
                     if ($book->status == 1) {
-                        return "true";
+                        return '<span class="badge">True</span>';
                     } else {
-                        return "false";
+                        return '<span class="badge">False</span>';
                     }
                 })
                 ->addColumn('action', function ($book) {
