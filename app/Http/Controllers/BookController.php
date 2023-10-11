@@ -7,8 +7,8 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use DataTables;
-use Auth;
 
 class BookController extends Controller
 {
@@ -242,8 +242,6 @@ class BookController extends Controller
             $query->whereBetween('no_of_page', [25, 90])->Where('no_of_page', '!=', 80);
         } else if ($value == Book::Not_Pages_Books) {
             $query->Where('no_of_page', 0);
-        } else if ($value == Book::Show_All_Data) {
-
         } else if ($value == Book::Released_Year_2015_And_2001) {
             $query->whereIn('released_year', [2001, 2015]);
         }
