@@ -464,7 +464,8 @@
                                             </div>
                                             <div class="col_half">
                                                 <div class="input_field">
-                                                    <lable style="color:#6e7582;"
+                                                    <lable
+                                                        style="color: #6e7582"
                                                         >Status</lable
                                                     >
                                                     <label
@@ -695,16 +696,25 @@
                                             </div>
                                             <div class="col_half">
                                                 <div class="input_field">
-                                                    <span
-                                                        ><font-awesome-icon
-                                                            icon="sliders"
-                                                    /></span>
-                                                    <input
-                                                        type="text"
-                                                        name="status"
-                                                        v-model="editStatus"
-                                                        placeholder="Status"
-                                                    />
+                                                    <label
+                                                        class="relative inline-flex items-center mr-5 cursor-pointer"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            value="true"
+                                                            class="sr-only peer"
+                                                            name="status"
+                                                            v-model="editStatus"
+                                                            checked
+                                                        />
+                                                        <div
+                                                            class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-gray-300 dark:peer-focus:ring-gray-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gray-800"
+                                                        ></div>
+                                                        <span
+                                                            class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                            >Status</span
+                                                        >
+                                                    </label>
                                                     <p
                                                         style="color: red"
                                                         id="status"
@@ -849,7 +859,7 @@ const editCategory = ref("");
 const editNo_of_page = ref("");
 const editPrice = ref("");
 const editReleased_year = ref("");
-const editStatus = ref("");
+const editStatus = ref("false");
 const editAuthor = ref("");
 
 const form = ref({
@@ -1005,7 +1015,7 @@ const modalOpen = async (id) => {
         editStatus.value = book_data.data.data.status;
         editAuthor.value = book_data.data.data.author;
 
-        console.log(editName);
+        // console.log("status" + editStatus.value);
         showEditModal.value = true;
     } catch (error) {}
 };

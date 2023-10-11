@@ -93,6 +93,12 @@ class BookController extends Controller
             ]);
         }
 
+        if($request->get('status') === "false" || $request->get('status') === 0 || $request->get('status') === false){
+            $status = 0;
+        }else if($request->get('status') === "true" || $request->get('status') === 1 || $request->get('status') === true){
+            $status = 1;
+        }
+
         $data = Book::where('id', $request->get('bookId'))
             ->update([
                 'name' => $request->get('name'),
@@ -102,7 +108,7 @@ class BookController extends Controller
                 'category' => $request->get('category'),
                 'price' => $request->get('price'),
                 'released_year' => $request->get('released_year'),
-                'status' => $request->get('status')
+                'status' => $status
             ]);
 
         if ($data) {
