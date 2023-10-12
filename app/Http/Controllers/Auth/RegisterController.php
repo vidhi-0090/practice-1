@@ -16,14 +16,15 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-
         $validate = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6'],
             'password_confirmation' => 'required|same:password',
             'gender' => ['required'],
-            'interest' => ['required'],
+            'interest' => ['required', 'array'],
+            'interest.*' => ['required', 'string', 'max:255'],
+            'image' => ['image']
         ]);
 
         if ($validate->fails()) {
@@ -33,12 +34,20 @@ class RegisterController extends Controller
             ]);
         }
 
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images');
+        }
+
+
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
             'gender' => $input['gender'],
-            'interest' => $input['interest'],
+            'interest' => serialize($input['interest']),
+            'image' => $imagePath,
         ]);
 
         $success['token'] = $user->createToken('MyApp')->plainTextToken;

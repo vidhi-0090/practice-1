@@ -77,11 +77,14 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
-import { useRouter } from "vue-router";
 import axios from "axios";
+import { useStore } from "vuex";
 
 export default {
-    setup: () => ({ v$: useVuelidate() }),
+    setup: () => ({
+        v$: useVuelidate(),
+        store: useStore(),
+    }),
     data: () => ({ password: "", email: "" }),
     validations() {
         return {
@@ -107,14 +110,23 @@ export default {
                         if (res.data.status === true) {
                             const token = res.data.data.token;
                             const user_id = res.data.data.id;
-                            console.log(user_id);
+
                             localStorage.setItem("token", token);
-                            isAuthenticated.value = true;
+
+                            console.log(
+                                "Before commit:",
+                                this.store.state.isAuthenticated
+                            );
+                            this.store.commit("setAuthenticationStatus", true);
+                            console.log(
+                                "After commit:",
+                                this.store.state.isAuthenticated
+                            );
+
                             this.$router.push({
                                 name: "dashboard",
                                 params: { user_id: user_id },
                             });
-
                         }
                     })
                     .catch((error) => {

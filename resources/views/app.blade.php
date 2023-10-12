@@ -16,7 +16,6 @@
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
         <link href="{{ asset('DataTables/datatables.min.css') }}" rel="stylesheet">
-        {{-- <script src="{{ asset('DataTables/datatables.min.js') }}"></script> --}}
 
         <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
         <!--  Vuelidate -->

@@ -16,7 +16,7 @@ class Book extends Model
     public const SHOW_ALL_DATA = 5;
     public const RELEASED_YEAR_2015_AND_2001 = 6;
     public const SORT_BY_CATEGORY = 7;
-    public const SORT_BY_RELEASED_YEAR= 8;
+    public const SORT_BY_RELEASED_YEAR = 8;
     public const SORT_BY_BOOK_AUTHOR = 9;
     public const SORT_BY_BOOK_PRICE = 10;
 }

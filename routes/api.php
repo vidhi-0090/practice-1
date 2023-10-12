@@ -27,6 +27,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth')->group(function () {
     Route::any('/user/{id}', [UserController::class, 'get_user'])->name('get_user');
+
+    Route::resource('books', BookController::class);
+
     Route::post('/addBook', [BookController::class, 'addBook'])->name('addBook');
     Route::post('/bookData/{id}', [BookController::class, 'bookData'])->name('bookData');
     Route::get('/getBookData/{id}', [BookController::class, 'getBookData'])->name('getBookData');
@@ -37,6 +40,8 @@ Route::middleware('auth')->group(function () {
 
     Route::any('/serverBooks', [BookController::class, 'serverBooks'])->name('serverBooks');
     Route::any('/serverBooksFilter', [BookController::class, 'serverBooksFilter'])->name('serverBooksFilter');
+
+    Route::any('/changePassword', [UserController::class, 'changePassword'])->name('changePassword');
 
 });
 

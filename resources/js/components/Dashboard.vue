@@ -14,6 +14,8 @@
             <br />
             <button
                 style="float: right"
+                id="show-modal"
+                @click="showPasswordModel = true"
                 class="bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
             >
                 Change Password
@@ -195,13 +197,16 @@
                         </td>
                         <td style="border: 1px solid black; padding: 5px">
                             <p
-                                :class="{
-                                    'status-true-class': data.status === 'True',
-                                    'status-false-class':
-                                        data.status === 'False',
-                                }"
+                                v-if="data.status == 1"
+                                class="status-true-class"
                             >
-                                {{ data.status }}
+                                True
+                            </p>
+                            <p
+                                v-if="data.status == 0"
+                                class="status-false-class"
+                            >
+                                False
                             </p>
                         </td>
                         <td
@@ -314,7 +319,7 @@
                                 <div class="">
                                     <p
                                         style="color: red"
-                                        v-for="error in errors"
+                                        v-for="error in success"
                                         :key="error"
                                     >
                                         <span v-for="err in error" :key="err">
@@ -332,7 +337,9 @@
                                                 placeholder="Name"
                                                 v-model="form.name"
                                             />
-                                            <p style="color: red" id="name"></p>
+                                            <p style="color: red" id="name">
+                                                {{ errors.name }}
+                                            </p>
                                         </div>
                                         <div class="row clearfix">
                                             <div class="col_half">
@@ -352,7 +359,9 @@
                                                     <p
                                                         style="color: red"
                                                         id="no_of_page"
-                                                    ></p>
+                                                    >
+                                                        {{ errors.no_of_page }}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="col_half">
@@ -370,7 +379,9 @@
                                                     <p
                                                         style="color: red"
                                                         id="author"
-                                                    ></p>
+                                                    >
+                                                        {{ errors.author }}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -390,7 +401,9 @@
                                                     <p
                                                         style="color: red"
                                                         id="category"
-                                                    ></p>
+                                                    >
+                                                        {{ errors.category }}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="col_half">
@@ -408,7 +421,9 @@
                                                     <p
                                                         style="color: red"
                                                         id="price"
-                                                    ></p>
+                                                    >
+                                                        {{ errors.price }}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -430,7 +445,11 @@
                                                     <p
                                                         style="color: red"
                                                         id="released_year"
-                                                    ></p>
+                                                    >
+                                                        {{
+                                                            errors.released_year
+                                                        }}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="col_half">
@@ -465,7 +484,9 @@
                                                     <p
                                                         style="color: red"
                                                         id="status"
-                                                    ></p>
+                                                    >
+                                                        {{ errors.status }}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -483,7 +504,9 @@
                                             <p
                                                 style="color: red"
                                                 id="description"
-                                            ></p>
+                                            >
+                                                {{ errors.description }}
+                                            </p>
                                         </div>
 
                                         <input
@@ -529,7 +552,7 @@
                                 <div class="">
                                     <p
                                         style="color: red"
-                                        v-for="error in errors"
+                                        v-for="error in success"
                                         :key="error"
                                     >
                                         <span v-for="err in error" :key="err">
@@ -565,7 +588,9 @@
                                                 placeholder="Name"
                                                 v-model="editName"
                                             />
-                                            <p style="color: red" id="name"></p>
+                                            <p style="color: red" id="name">
+                                                {{ errors.name }}
+                                            </p>
                                         </div>
                                         <div class="row clearfix">
                                             <div class="col_half">
@@ -583,7 +608,9 @@
                                                     <p
                                                         style="color: red"
                                                         id="no_of_page"
-                                                    ></p>
+                                                    >
+                                                        {{ errors.no_of_page }}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="col_half">
@@ -601,7 +628,9 @@
                                                     <p
                                                         style="color: red"
                                                         id="author"
-                                                    ></p>
+                                                    >
+                                                        {{ errors.author }}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -621,7 +650,9 @@
                                                     <p
                                                         style="color: red"
                                                         id="category"
-                                                    ></p>
+                                                    >
+                                                        {{ errors.category }}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="col_half">
@@ -639,7 +670,9 @@
                                                     <p
                                                         style="color: red"
                                                         id="price"
-                                                    ></p>
+                                                    >
+                                                        {{ errors.price }}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -661,7 +694,11 @@
                                                     <p
                                                         style="color: red"
                                                         id="released_year"
-                                                    ></p>
+                                                    >
+                                                        {{
+                                                            errors.released_year
+                                                        }}
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="col_half">
@@ -688,7 +725,9 @@
                                                     <p
                                                         style="color: red"
                                                         id="status"
-                                                    ></p>
+                                                    >
+                                                        {{ errors.status }}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -706,7 +745,9 @@
                                             <p
                                                 style="color: red"
                                                 id="description"
-                                            ></p>
+                                            >
+                                                {{ errors.description }}
+                                            </p>
                                         </div>
 
                                         <input
@@ -752,7 +793,7 @@
                                 <div class="">
                                     <p
                                         style="color: red"
-                                        v-for="error in errors"
+                                        v-for="error in success"
                                         :key="error"
                                     >
                                         <span v-for="err in error" :key="err">
@@ -798,6 +839,93 @@
                 </div>
             </template>
         </modal>
+
+        <modal
+            :show="showPasswordModel"
+            @close="showPasswordModel = false"
+            id="showPasswordModel"
+        >
+            <template #header>
+                <button
+                    type="button"
+                    style="
+                        float: right;
+                        border: 1px solid #cccccc;
+                        padding: 8px 10px;
+                    "
+                    @click="closeModal()"
+                >
+                    X
+                </button>
+            </template>
+            <template #body>
+                <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+                    <div class="form_wrapper">
+                        <div class="form_container">
+                            <div class="title_container">
+                                <h2>Change Password</h2>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="">
+                                    <p
+                                        style="color: red"
+                                        v-for="error in success"
+                                        :key="error"
+                                    >
+                                        <span v-for="err in error" :key="err">
+                                            {{ err }}
+                                        </span>
+                                    </p>
+                                    <form @submit.prevent="changePassword()">
+                                        <div class="input_field">
+                                            <input
+                                                type="text"
+                                                name="current_password"
+                                                placeholder="Current Password"
+                                                v-model="current_password"
+                                            />
+                                            <p style="color: red">
+                                                {{ errors.name }}
+                                            </p>
+                                        </div>
+
+                                        <div class="input_field">
+                                            <input
+                                                type="text"
+                                                name="password"
+                                                placeholder="Password"
+                                                v-model="password"
+                                            />
+                                            <p style="color: red" >
+                                                {{ errors.password }}
+                                            </p>
+                                        </div>
+
+                                        <div class="input_field">
+                                            <input
+                                                type="text"
+                                                name="password_confirmation"
+                                                placeholder="Password Confirmation"
+                                                v-model="password_confirmation"
+                                            />
+                                            <p style="color: red">
+                                                {{ errors.password_confirmation }}
+                                            </p>
+                                        </div>
+                                        <input
+                                            class="button"
+                                            type="submit"
+                                            value="Change Password"
+                                        />
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </modal>
     </Teleport>
 </template>
 
@@ -814,6 +942,7 @@ import "datatables.net-bs4";
 const showModal = ref(false);
 const showEditModal = ref(false);
 const showDeleteModal = ref(false);
+const showPasswordModel = ref(false);
 const route = useRoute();
 const router = useRouter();
 
@@ -831,6 +960,10 @@ const editReleased_year = ref("");
 const editStatus = ref("false");
 const editAuthor = ref("");
 
+const password = ref("");
+const current_password = ref("");
+const password_confirmation = ref("");
+
 const form = ref({
     name: "",
     description: "",
@@ -844,7 +977,18 @@ const form = ref({
 });
 
 const bookId = ref(0);
-const errors = reactive({});
+
+const errors = reactive({
+    name: "",
+    no_of_page: "",
+    author: "",
+    category: "",
+    price: "",
+    released_year: "",
+    status: "",
+    description: "", // Add a key for image errors
+});
+const success = reactive({});
 const searchDataNotFound = reactive({});
 const searchRequired = reactive({});
 const alerts = reactive({});
@@ -935,8 +1079,10 @@ const saveData = async () => {
             userId: route.params.user_id,
         });
         if (response.data.status === true) {
-            errors.value = response.data.message;
+            success.value = response.data.message;
             showModal.value = false;
+            datatable.value = $(".bookDatatable").DataTable().ajax.reload();
+
             try {
                 const user_data = await axios.get("/api/user/" + user_id);
                 username.value = user_data.data.data.name;
@@ -945,7 +1091,13 @@ const saveData = async () => {
             } catch (error) {}
         } else {
             console.log(response.data);
-            errors.value = response.data.message;
+            // errors.value = response.data.message;
+            const responseErrors = response.data.message;
+            for (const field in responseErrors) {
+                if (field in errors) {
+                    errors[field] = responseErrors[field][0];
+                }
+            }
         }
     } catch (error) {
         console.log(error);
@@ -984,6 +1136,7 @@ const editData = async () => {
         });
 
         if (edit_response.data.status === true) {
+            success.value = edit_response.data.message;
             showEditModal.value = false;
             datatable.value = $(".bookDatatable").DataTable().ajax.reload();
 
@@ -994,7 +1147,13 @@ const editData = async () => {
                 bookData.value = user_data.data.book;
             } catch (error) {}
         } else {
-            console.log(response.data);
+            // console.log(response.data);
+            const responseErrors = edit_response.data.message;
+            for (const field in responseErrors) {
+                if (field in errors) {
+                    errors[field] = responseErrors[field][0];
+                }
+            }
         }
     } catch (error) {
         console.log(error);
@@ -1031,10 +1190,38 @@ const deleteData = async () => {
     }
 };
 
+
+const changePassword = async () => {
+    try {
+        const response = await axios.post(baseUrl + "api/changePassword", {
+            current_password: current_password.value,
+            password: password.value,
+            password_confirmation: password_confirmation.value,
+        });
+        if (response.data.status === true) {
+            success.value = response.data.message;
+            showPasswordModel.value = false;
+
+        } else {
+            console.log(response.data);
+            // errors.value = response.data.message;
+            const responseErrors = response.data.message;
+            for (const field in responseErrors) {
+                if (field in errors) {
+                    errors[field] = responseErrors[field][0];
+                }
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const closeModal = async () => {
     showDeleteModal.value = false;
     showEditModal.value = false;
     showModal.value = false;
+    showPasswordModel.value = false;
     try {
         const user_data = await axios.get("/api/user/" + user_id);
         username.value = user_data.data.data.name;
@@ -1065,11 +1252,7 @@ const initDataTable = () => {
                 targets: 8,
                 render: function (data, type, row) {
                     if (type === "display") {
-                        var statusClass =
-                            data === "True"
-                                ? "status-true-class"
-                                : "status-false-class";
-                        if (data === "True") {
+                        if (data == "True") {
                             return (
                                 '<p class="status-true-class" style=" width: 50%; text-align: center; border: 1px solid #427b35;  border-radius: 5px; background-color: #427b35; color: white;">' +
                                 data +
@@ -1108,6 +1291,7 @@ $(document).on("change", "#book-Pages", function () {
         url: baseUrl + "api/booksFilter/?value=" + testId,
         data: {},
         success: function (data) {
+            console.log(data.book);
             bookData.value = data.book;
             bookDataLength.value = bookData.value.length;
         },

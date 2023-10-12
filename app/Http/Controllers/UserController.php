@@ -14,14 +14,8 @@ class UserController extends Controller
     public function get_user($id):JsonResponse
     {
         $data = User::find($id);
-        $book = Book::where('userId',$id)->get();
-        foreach($book as $b){
-            if($b->status == 1 ){
-                $b->status = 'True';
-            }else{
-                $b->status = 'False';
-            }
-        }
+        $book = Book::where('userId',Auth::user()->id)->get();
+
         return response()->json([
             'status' => true,
             'data' => $data,
@@ -29,6 +23,22 @@ class UserController extends Controller
             'auth' => Auth::user(),
             'message' => "successful get data"
         ]);
+    }
+
+    public function changePassword(Request $request):JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'current_password' => ['required', 'string', 'min:6'],
+            'password' => ['required', 'string', 'min:6'],
+            'password_confirmation' => 'required|same:password',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
+        }
     }
 
 

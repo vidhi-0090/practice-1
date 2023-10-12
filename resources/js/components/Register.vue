@@ -15,7 +15,7 @@
                     </div>
                     <div class="row clearfix">
                         <div class="">
-                            <p
+                            <!-- <p
                                 style="color: red"
                                 v-for="error in errors"
                                 :key="error"
@@ -24,7 +24,7 @@
                                 <span v-for="err in error" :key="err">
                                     {{ err }}
                                 </span>
-                            </p>
+                            </p> -->
                             <form @submit.prevent="register">
                                 <div class="row clearfix">
                                     <div class="col_half">
@@ -40,7 +40,7 @@
                                                 v-model="form.name"
                                                 placeholder="First Name"
                                             />
-                                            <p style="color: red" id="name"></p>
+                                            <p style="color: red" id="name">  {{ errors.name }}</p>
                                         </div>
                                     </div>
                                     <div class="col_half">
@@ -54,7 +54,9 @@
                                                 v-model="form.last_name"
                                                 placeholder="Last Name"
                                             />
-                                            <p style="color: red" id="name"></p>
+                                            <p style="color: red" id="name">
+                                                {{ errors.last_name }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -69,7 +71,7 @@
                                         placeholder="Email"
                                         v-model="form.email"
                                     />
-                                    <p style="color: red" id="email"></p>
+                                    <p style="color: red" id="email"> {{ errors.email }}</p>
                                 </div>
                                 <div class="input_field">
                                     <span
@@ -81,7 +83,7 @@
                                         placeholder="Password"
                                         v-model="form.password"
                                     />
-                                    <p style="color: red" id="password"></p>
+                                    <p style="color: red" id="password">{{ errors.password }}</p>
                                 </div>
                                 <div class="input_field">
                                     <span
@@ -96,7 +98,7 @@
                                     <p
                                         style="color: red"
                                         id="password_confirmation"
-                                    ></p>
+                                    >{{ errors.password_confirmation }}</p>
                                 </div>
 
                                 <div class="input_field radio_option">
@@ -116,20 +118,25 @@
                                         v-model="form.gender"
                                     />
                                     <label for="rd2">Female</label>
-                                    <p style="color: red" id="gender"></p>
+                                    <p style="color: red" id="gender">{{ errors.gender }}</p>
                                 </div>
-
-                                <div class="input_field">
-                                    <span
-                                        ><font-awesome-icon icon="cog"
-                                    /></span>
-                                    <textarea
-                                        type="text"
+                                <div class="input_field multi_select_option">
+                                    <select
                                         name="interest"
                                         placeholder="interest"
                                         v-model="form.interest"
-                                    ></textarea>
-                                    <p style="color: red" id="interest"></p>
+                                        multiple
+                                    >
+                                        <option selected="">
+                                            Select Interest
+                                        </option>
+                                        <option value="Singing">Singing</option>
+                                        <option value="Dancing">Dancing</option>
+                                        <option value="Playing">Playing</option>
+                                        <option value="Reading">Reading</option>
+                                    </select>
+
+                                    <p style="color: red" id="interest">{{ errors.interest }}</p>
                                 </div>
 
                                 <div class="input_field">
@@ -140,7 +147,9 @@
                                         type="file"
                                         name="image"
                                         placeholder="Profile"
-                                    />
+                                        ref="imageInput"
+                                        @change="handleImageUpload"
+                                    /><p style="color: red" id="image">{{ errors.image }}</p>
                                 </div>
 
                                 <input
@@ -171,28 +180,57 @@ const form = ref({
     password: "",
     password_confirmation: "",
     gender: "",
-    interest: "",
+    interest: [],
 });
-const errors = reactive({});
+
+const errors = reactive({
+    name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+    gender: "",
+    interest: "",
+    image: "", // Add a key for image errors
+});
+
+const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    form.value.image = file;
+};
 
 const register = async () => {
+    const formData = new FormData();
+    formData.append("name", form.value.name + " " + form.value.last_name);
+    formData.append("email", form.value.email);
+    formData.append("password", form.value.password);
+    formData.append("password_confirmation", form.value.password_confirmation);
+    formData.append("gender", form.value.gender);
+    form.value.interest.forEach((interest, index) => {
+        formData.append(`interest[${index}]`, interest);
+    });
+    if (form.value.image) {
+        formData.append("image", form.value.image);
+    }
+
     try {
-        const response_register = await axios.post("api/register", {
-            name: form.value.name + " " + form.value.last_name,
-            email: form.value.email,
-            password: form.value.password,
-            password_confirmation: form.value.password_confirmation,
-            gender: form.value.gender,
-            interest: form.value.interest,
+        const response_register = await axios.post("api/register", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
         });
 
         if (response_register.data.status === true) {
             router.push("login");
         } else {
             console.log(response_register.data);
-
-            errors.value = response_register.data.message;
-            // errors.forEach(errorArray);
+            const responseErrors = response_register.data.message;
+            // errors.value = response_register.data.message;
+            for (const field in responseErrors) {
+                if (field in errors) {
+                    errors[field] = responseErrors[field][0];
+                }
+            }
         }
     } catch (error) {
         console.log(error);
