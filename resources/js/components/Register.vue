@@ -30,7 +30,9 @@
                                     <div class="col_half">
                                         <div class="input_field">
                                             <span
-                                                ><font-awesome-icon icon="user" />
+                                                ><font-awesome-icon
+                                                    icon="user"
+                                                />
                                             </span>
                                             <input
                                                 type="text"
@@ -38,56 +40,63 @@
                                                 v-model="form.name"
                                                 placeholder="First Name"
                                             />
-                                            <p style="color:red" id="name"></p>
+                                            <p style="color: red" id="name"></p>
                                         </div>
                                     </div>
                                     <div class="col_half">
                                         <div class="input_field">
                                             <span
-                                                ><font-awesome-icon icon="user" /></span>
+                                                ><font-awesome-icon icon="user"
+                                            /></span>
                                             <input
                                                 type="text"
                                                 name="last_name"
                                                 v-model="form.last_name"
                                                 placeholder="Last Name"
                                             />
-                                            <p style="color:red" id="name"></p>
+                                            <p style="color: red" id="name"></p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="input_field">
                                     <span
-                                        ><font-awesome-icon icon="envelope" /></span>
+                                        ><font-awesome-icon icon="envelope"
+                                    /></span>
                                     <input
                                         type="email"
                                         name="email"
                                         placeholder="Email"
                                         v-model="form.email"
                                     />
-                                    <p style="color:red" id="email"></p>
+                                    <p style="color: red" id="email"></p>
                                 </div>
                                 <div class="input_field">
                                     <span
-                                        ><font-awesome-icon icon="lock" /></span>
+                                        ><font-awesome-icon icon="lock"
+                                    /></span>
                                     <input
                                         type="password"
                                         name="password"
                                         placeholder="Password"
                                         v-model="form.password"
                                     />
-                                    <p style="color:red" id="password"></p>
+                                    <p style="color: red" id="password"></p>
                                 </div>
                                 <div class="input_field">
                                     <span
-                                        ><font-awesome-icon icon="lock" /></span>
+                                        ><font-awesome-icon icon="lock"
+                                    /></span>
                                     <input
                                         type="password"
                                         name="password_confirmation"
                                         placeholder="Re-type Password"
                                         v-model="form.password_confirmation"
                                     />
-                                    <p style="color:red" id="password_confirmation"></p>
+                                    <p
+                                        style="color: red"
+                                        id="password_confirmation"
+                                    ></p>
                                 </div>
 
                                 <div class="input_field radio_option">
@@ -107,30 +116,31 @@
                                         v-model="form.gender"
                                     />
                                     <label for="rd2">Female</label>
-                                    <p style="color:red" id="gender"></p>
+                                    <p style="color: red" id="gender"></p>
                                 </div>
 
                                 <div class="input_field">
                                     <span
-                                        ><font-awesome-icon icon="cog" /></span>
+                                        ><font-awesome-icon icon="cog"
+                                    /></span>
                                     <textarea
                                         type="text"
                                         name="interest"
                                         placeholder="interest"
                                         v-model="form.interest"
                                     ></textarea>
-                                    <p style="color:red" id="interest"></p>
+                                    <p style="color: red" id="interest"></p>
                                 </div>
 
                                 <div class="input_field">
                                     <span
-                                        ><font-awesome-icon icon="camera" /></span>
+                                        ><font-awesome-icon icon="camera"
+                                    /></span>
                                     <input
                                         type="file"
                                         name="image"
                                         placeholder="Profile"
                                     />
-
                                 </div>
 
                                 <input
@@ -168,7 +178,7 @@ const errors = reactive({});
 const register = async () => {
     try {
         const response_register = await axios.post("api/register", {
-            name: form.value.name + ' ' + form.value.last_name,
+            name: form.value.name + " " + form.value.last_name,
             email: form.value.email,
             password: form.value.password,
             password_confirmation: form.value.password_confirmation,
@@ -185,19 +195,9 @@ const register = async () => {
             // errors.forEach(errorArray);
         }
     } catch (error) {
-       console.log(error);
+        console.log(error);
     }
-
-    // function errorArray(message, index ) {
-    //     console.log(message);
-    //     console.log(index);
-    //     text += index + ": " + message + "<br>";
-    //     document.getElementById("name").innerHTML = text;
-
-    // }
 };
-
-
 </script>
 
 <style lang="scss" scoped>

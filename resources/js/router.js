@@ -4,7 +4,6 @@ import Login from "./components/Login.vue";
 import Logout from "./components/Logout.vue";
 import Home from "./components/Home.vue";
 import Dashboard from "./components/Dashboard.vue";
-// import User from './components/Dashboard.vue';
 
 const routes = [
     {
@@ -40,14 +39,7 @@ const routes = [
             requiresAuth: true,
         },
     },
-    // {
-    //     path: '/get_user/:user_id',
-    //     name: 'get_user',
-    //     component: User,
-    //     meta: {
-    //         requiresAuth:true
-    //     }
-    // },
+
 ];
 
 const router = createRouter({

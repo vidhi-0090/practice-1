@@ -214,23 +214,23 @@ class BookController extends Controller
         $value = $request->get('value');
         $query = Book::query()->where('userId', Auth::user()->id);
 
-        if ($value == Book::More_Than_100_Pages) {
+        if ($value == Book::MORE_THAN_100_PAGES) {
             $query->Where('no_of_page', '>', 100);
-        } else if ($value == Book::Less_Than_90_And_More_Than_25_Pages) {
+        } else if ($value == Book::LESS_THAN_90_AND_MORE_THAN_25_PAGES) {
             $query->whereBetween('no_of_page', [25, 90]);
-        } else if ($value == Book::Less_Than_90_And_More_Than_25_But_Not_80_Pages) {
+        } else if ($value == Book::LESS_THAN_90_AND_MORE_THAN_25_BUT_NOT_80_PAGES) {
             $query->whereBetween('no_of_page', [25, 90])->Where('no_of_page', '!=', 80);
-        } else if ($value == Book::Not_Pages_Books) {
+        } else if ($value == Book::EMPTY_PAGES_BOOK) {
             $query->Where('no_of_page', 0);
-        } else if ($value == Book::Released_Year_2015_And_2001) {
+        } else if ($value == Book::RELEASED_YEAR_2015_AND_2001) {
             $query->whereIn('released_year', [2001, 2015]);
-        } else if ($value == Book::Sort_By_Category) {
+        } else if ($value == Book::SORT_BY_CATEGORY) {
             $query->orderBy('category','asc');
-        } else if ($value == Book::Sort_By_Released_Year) {
+        } else if ($value == Book::SORT_BY_RELEASED_YEAR) {
             $query->orderBy('released_year','asc');
-        } else if ($value == Book::Sort_By_Book_Author) {
+        } else if ($value == Book::SORT_BY_BOOK_AUTHOR) {
             $query->orderBy('author','asc');
-        } else if ($value == Book::Sort_By_Book_Price) {
+        } else if ($value == Book::SORT_BY_BOOK_PRICE) {
             $query->orderBy('price','asc');
         }
 
@@ -248,21 +248,21 @@ class BookController extends Controller
         $value = $request->get('value');
         $query = Book::query()->where('userId', Auth::user()->id);
 
-        if ($value == Book::More_Than_100_Pages) {
+        if ($value == Book::MORE_THAN_100_PAGES) {
             $query->Where('no_of_page', '>', 100);
-        } else if ($value == Book::Less_Than_90_And_More_Than_25_Pages) {
+        } else if ($value == Book::LESS_THAN_90_AND_MORE_THAN_25_PAGES) {
             $query->whereBetween('no_of_page', [25, 90]);
-        } else if ($value == Book::Less_Than_90_And_More_Than_25_But_Not_80_Pages) {
+        } else if ($value == Book::LESS_THAN_90_AND_MORE_THAN_25_BUT_NOT_80_PAGES) {
             $query->whereBetween('no_of_page', [25, 90])->Where('no_of_page', '!=', 80);
-        } else if ($value == Book::Not_Pages_Books) {
+        } else if ($value == Book::EMPTY_PAGES_BOOK) {
             $query->Where('no_of_page', 0);
-        } else if ($value == Book::Released_Year_2015_And_2001) {
+        } else if ($value == Book::RELEASED_YEAR_2015_AND_2001) {
             $query->whereIn('released_year', [2001, 2015]);
-        } else if ($value == Book::Sort_By_Released_Year) {
+        } else if ($value == Book::SORT_BY_RELEASED_YEAR) {
             $query->orderBy('released_year','asc');
-        } else if ($value == Book::Sort_By_Book_Author) {
+        } else if ($value == Book::SORT_BY_BOOK_AUTHOR) {
             $query->orderBy('author','asc');
-        } else if ($value == Book::Sort_By_Book_Price) {
+        } else if ($value == Book::SORT_BY_BOOK_PRICE) {
             $query->orderBy('price','asc');
         }
 

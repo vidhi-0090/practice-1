@@ -9,14 +9,14 @@ class Book extends Model
 {
     use HasFactory;
     // Define a constant variable
-    public const More_Than_100_Pages = 1;
-    public const Less_Than_90_And_More_Than_25_Pages = 2;
-    public const Less_Than_90_And_More_Than_25_But_Not_80_Pages = 3;
-    public const Not_Pages_Books = 4;
-    public const Show_All_Data = 5;
-    public const Released_Year_2015_And_2001 = 6;
-    public const Sort_By_Category = 7;
-    public const Sort_By_Released_Year = 8;
-    public const Sort_By_Book_Author = 9;
-    public const Sort_By_Book_Price = 10;
+    public const MORE_THAN_100_PAGES = 1;
+    public const LESS_THAN_90_AND_MORE_THAN_25_PAGES = 2;
+    public const LESS_THAN_90_AND_MORE_THAN_25_BUT_NOT_80_PAGES = 3;
+    public const EMPTY_PAGES_BOOK = 4;
+    public const SHOW_ALL_DATA = 5;
+    public const RELEASED_YEAR_2015_AND_2001 = 6;
+    public const SORT_BY_CATEGORY = 7;
+    public const SORT_BY_RELEASED_YEAR= 8;
+    public const SORT_BY_BOOK_AUTHOR = 9;
+    public const SORT_BY_BOOK_PRICE = 10;
 }

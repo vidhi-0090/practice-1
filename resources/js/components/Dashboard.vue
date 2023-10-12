@@ -27,11 +27,7 @@
             </button>
             <br />
             <br />
-            <!-- <p style="color: red" v-for="error in searchRequired" :key="error">
-                <span v-for="err in error" :key="err">
-                    {{ err }}
-                </span>
-            </p> -->
+
             <div class="select_option">
                 <select
                     id="book-Pages"
@@ -53,19 +49,14 @@
                     <option value="10">Sort By Book Price</option>
                 </select>
             </div>
+
             <input
                 @keyup="searchData()"
                 type="search"
                 placeholder="Search"
                 v-model="search"
             />
-            <!-- <button
-                @click="searchData()"
-                style="background-color: #212529"
-                class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-            >
-                Search
-            </button> -->
+
             <br />
             <br />
 
@@ -238,10 +229,6 @@
                 </tbody>
             </table>
 
-            <!-- <ul>
-                <li v-for="item in collection" :key="item">{{ item.name }}</li>
-            </ul> -->
-
             <div>
                 <button
                     class="bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
@@ -274,20 +261,6 @@
                     <option value="10">Sort By Book Price</option>
                 </select>
             </div>
-            <!-- <select
-                id="bookPages"
-                class="bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-            >
-                <option disabled>Show By Pages</option>
-                <option value="1">More Than 100 Pages</option>
-                <option value="2">Less Than 90 & More Than 25 Pages</option>
-                <option value="3">
-                    Less Than 90 & More Than 25 But Not 80 Pages
-                </option>
-                <option value="4">00 Pages Books</option>
-                <option value="5">Show All Data</option>
-                <option value="6">Released Year 2015 & 2001</option>
-            </select> -->
             <br />
 
             <div>
@@ -316,7 +289,6 @@
     </main>
 
     <Teleport to="body">
-        <!-- use the modal component, pass in the prop -->
         <modal :show="showModal" @close="showModal = false" id="showModel">
             <template #header>
                 <button
@@ -345,7 +317,6 @@
                                         v-for="error in errors"
                                         :key="error"
                                     >
-                                        <!-- {{ error }} -->
                                         <span v-for="err in error" :key="err">
                                             {{ err }}
                                         </span>
@@ -561,7 +532,6 @@
                                         v-for="error in errors"
                                         :key="error"
                                     >
-                                        <!-- {{ error }} -->
                                         <span v-for="err in error" :key="err">
                                             {{ err }}
                                         </span>
@@ -785,7 +755,6 @@
                                         v-for="error in errors"
                                         :key="error"
                                     >
-                                        <!-- {{ error }} -->
                                         <span v-for="err in error" :key="err">
                                             {{ err }}
                                         </span>
@@ -896,7 +865,6 @@ const setPage = async (p) => {
     } catch (error) {
         console.error(error);
     }
-
     pagination.value = paginator(bookDataLength.value, p);
 };
 
@@ -915,7 +883,6 @@ const paginate = (pageData) => {
 const paginator = (totalItems, currentPage) => {
     const startIndex = (currentPage - 1) * perPage.value;
     const endIndex = Math.min(startIndex + perPage.value - 1, totalItems - 1);
-
     return {
         currentPage: currentPage,
         startIndex: startIndex,
@@ -931,15 +898,8 @@ const fetchUser = async () => {
         email.value = user_data.data.data.email;
         bookData.value = user_data.data.book;
         bookDataLength.value = bookData.value.length;
-        // console.log('Length of bookData:' + bookDataLength.value);
     } catch (error) {}
 };
-
-// const filteredData = computed(() => {
-//     return bookData.value.filter(data => {
-//         return data.name.toLowerCase().includes(search.value.toLowerCase());
-//     });
-// });
 
 const searchData = async () => {
     try {
@@ -948,20 +908,14 @@ const searchData = async () => {
         );
 
         if (search_datas.data.status === false) {
-            // errors.value = search_datas.data.message;
             searchDataNotFound.value = "";
-            // searchRequired.value = search_datas.data.message;
         } else {
-            // console.log(search_datas.data.book.length == 0);
             if (search_datas.data.book.length == 0) {
                 bookData.value = search_datas.data.book;
                 searchDataNotFound.value = search_datas.data.message;
-                // searchRequired.value = "";
-                // console.log(searchDataNotFound);
             } else {
                 bookData.value = search_datas.data.book;
                 searchDataNotFound.value = "";
-                // searchRequired.value = "";
             }
         }
     } catch (error) {}
@@ -980,17 +934,14 @@ const saveData = async () => {
             status: form.value.status,
             userId: route.params.user_id,
         });
-        // console.log(response);
         if (response.data.status === true) {
             errors.value = response.data.message;
             showModal.value = false;
             try {
                 const user_data = await axios.get("/api/user/" + user_id);
-                // console.log(user_data.data);
                 username.value = user_data.data.data.name;
                 email.value = user_data.data.data.email;
                 bookData.value = user_data.data.book;
-                // console.log(bookData);
             } catch (error) {}
         } else {
             console.log(response.data);
@@ -1005,7 +956,6 @@ const modalOpen = async (id) => {
     bookId.value = id;
     try {
         const book_data = await axios.get(baseUrl + "api/getBookData/" + id);
-        // console.log(book_data.data.data.name);
         editName.value = book_data.data.data.name;
         editDescription.value = book_data.data.data.description;
         editCategory.value = book_data.data.data.category;
@@ -1015,7 +965,6 @@ const modalOpen = async (id) => {
         editStatus.value = book_data.data.data.status;
         editAuthor.value = book_data.data.data.author;
 
-        // console.log("status" + editStatus.value);
         showEditModal.value = true;
     } catch (error) {}
 };
@@ -1035,21 +984,17 @@ const editData = async () => {
         });
 
         if (edit_response.data.status === true) {
-            // console.log(edit_response.data.status );
             showEditModal.value = false;
             datatable.value = $(".bookDatatable").DataTable().ajax.reload();
 
             try {
                 const user_data = await axios.get("/api/user/" + user_id);
-                // console.log(user_data.data);
                 username.value = user_data.data.data.name;
                 email.value = user_data.data.data.email;
                 bookData.value = user_data.data.book;
-                // console.log(bookData);
             } catch (error) {}
         } else {
             console.log(response.data);
-            // errors.value = response.data.message;
         }
     } catch (error) {
         console.log(error);
@@ -1074,11 +1019,9 @@ const deleteData = async () => {
             datatable.value = $(".bookDatatable").DataTable().ajax.reload();
             try {
                 const user_data = await axios.get("/api/user/" + user_id);
-                // console.log(user_data.data);
                 username.value = user_data.data.data.name;
                 email.value = user_data.data.data.email;
                 bookData.value = user_data.data.book;
-                // console.log(bookData);
             } catch (error) {}
         } else {
             // errors.value = response.data.message;
@@ -1094,11 +1037,9 @@ const closeModal = async () => {
     showModal.value = false;
     try {
         const user_data = await axios.get("/api/user/" + user_id);
-        // console.log(user_data.data);
         username.value = user_data.data.data.name;
         email.value = user_data.data.data.email;
         bookData.value = user_data.data.book;
-        // console.log(bookData);
     } catch (error) {}
 };
 
@@ -1167,7 +1108,6 @@ $(document).on("change", "#book-Pages", function () {
         url: baseUrl + "api/booksFilter/?value=" + testId,
         data: {},
         success: function (data) {
-            // console.log(data)
             bookData.value = data.book;
             bookDataLength.value = bookData.value.length;
         },
@@ -1200,7 +1140,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@import "../../css/app.css"; /* injected */
+@import "../../css/app.css";
 
 .status-true-class {
     width: 50%;
