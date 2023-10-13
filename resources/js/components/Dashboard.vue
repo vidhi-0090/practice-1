@@ -1091,10 +1091,8 @@ const saveData = async () => {
                 icon: "success",
                 title: "Add Book-Data Successful",
                 showConfirmButton: true,
-            }).then(() => {
-                datatable.value = $(".bookDatatable").DataTable().ajax.reload();
             });
-
+            datatable.value = $(".bookDatatable").DataTable().ajax.reload();
             try {
                 const user_data = await axios.get("/api/users");
                 username.value = user_data.data.data.name;
@@ -1154,10 +1152,8 @@ const editData = async () => {
                 icon: "success",
                 title: "Successful Edit Book-Data",
                 showConfirmButton: true,
-            }).then(() => {
-                datatable.value = $(".bookDatatable").DataTable().ajax.reload();
             });
-
+            datatable.value = $(".bookDatatable").DataTable().ajax.reload();
             try {
                 const user_data = await axios.get("/api/users");
                 username.value = user_data.data.data.name;
@@ -1197,9 +1193,8 @@ const deleteData = async () => {
                 icon: "success",
                 title: "Successful Delete Book-Data",
                 showConfirmButton: true,
-            }).then(() => {
-                datatable.value = $(".bookDatatable").DataTable().ajax.reload();
             });
+            datatable.value = $(".bookDatatable").DataTable().ajax.reload();
             try {
                 const user_data = await axios.get("/api/users");
                 username.value = user_data.data.data.name;
