@@ -12,14 +12,13 @@ use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-
     public function store(Request $request)
     {
         $input = $request->all();
         $validate = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6'],
+            'password' => ['required', 'string', 'min:6','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/'],
             'password_confirmation' => 'required|same:password',
             'gender' => ['required'],
             'interest' => ['required', 'array'],

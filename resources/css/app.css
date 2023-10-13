@@ -342,6 +342,11 @@ input[type="search"]:focus {
 .dataTables_wrapper .dataTables_filter input {
     width:200px;
 }
+
+button.swal2-confirm.swal2-styled {
+    background-color: #1f2937 !important;
+
+}
 @-webkit-keyframes check {
     0% {
         height: 0;

@@ -6,6 +6,7 @@
             </h1>
         </div>
     </header>
+
     <main>
         <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             <div class="form_wrapper">
@@ -40,7 +41,9 @@
                                                 v-model="form.name"
                                                 placeholder="First Name"
                                             />
-                                            <p style="color: red" id="name">  {{ errors.name }}</p>
+                                            <p style="color: red" id="name">
+                                                {{ errors.name }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="col_half">
@@ -71,7 +74,9 @@
                                         placeholder="Email"
                                         v-model="form.email"
                                     />
-                                    <p style="color: red" id="email"> {{ errors.email }}</p>
+                                    <p style="color: red" id="email">
+                                        {{ errors.email }}
+                                    </p>
                                 </div>
                                 <div class="input_field">
                                     <span
@@ -83,7 +88,9 @@
                                         placeholder="Password"
                                         v-model="form.password"
                                     />
-                                    <p style="color: red" id="password">{{ errors.password }}</p>
+                                    <p style="color: red" id="password">
+                                        {{ errors.password }}
+                                    </p>
                                 </div>
                                 <div class="input_field">
                                     <span
@@ -98,7 +105,9 @@
                                     <p
                                         style="color: red"
                                         id="password_confirmation"
-                                    >{{ errors.password_confirmation }}</p>
+                                    >
+                                        {{ errors.password_confirmation }}
+                                    </p>
                                 </div>
 
                                 <div class="input_field radio_option">
@@ -118,7 +127,9 @@
                                         v-model="form.gender"
                                     />
                                     <label for="rd2">Female</label>
-                                    <p style="color: red" id="gender">{{ errors.gender }}</p>
+                                    <p style="color: red" id="gender">
+                                        {{ errors.gender }}
+                                    </p>
                                 </div>
                                 <div class="input_field multi_select_option">
                                     <select
@@ -136,7 +147,9 @@
                                         <option value="Reading">Reading</option>
                                     </select>
 
-                                    <p style="color: red" id="interest">{{ errors.interest }}</p>
+                                    <p style="color: red" id="interest">
+                                        {{ errors.interest }}
+                                    </p>
                                 </div>
 
                                 <div class="input_field">
@@ -149,7 +162,10 @@
                                         placeholder="Profile"
                                         ref="imageInput"
                                         @change="handleImageUpload"
-                                    /><p style="color: red" id="image">{{ errors.image }}</p>
+                                    />
+                                    <p style="color: red" id="image">
+                                        {{ errors.image }}
+                                    </p>
                                 </div>
 
                                 <input
@@ -168,9 +184,9 @@
 
 <script setup>
 import axios from "axios";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
-
+import Swal from "sweetalert2";
 const router = useRouter();
 
 const form = ref({
@@ -221,11 +237,16 @@ const register = async () => {
         });
 
         if (response_register.data.status === true) {
-            router.push("login");
+            Swal.fire({
+                icon: "success",
+                title: "Registration Successful",
+                text: "You will be redirected to the login page.",
+                showConfirmButton: true,
+            }).then(() => {
+                router.push("login");
+            });
         } else {
-            console.log(response_register.data);
             const responseErrors = response_register.data.message;
-            // errors.value = response_register.data.message;
             for (const field in responseErrors) {
                 if (field in errors) {
                     errors[field] = responseErrors[field][0];
@@ -239,5 +260,5 @@ const register = async () => {
 </script>
 
 <style lang="scss" scoped>
-@import "../../css/app.css"; /* injected */
+@import "../../css/app.css";
 </style>

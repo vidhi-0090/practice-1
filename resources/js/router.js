@@ -4,7 +4,7 @@ import Login from "./components/Login.vue";
 import Logout from "./components/Logout.vue";
 import Home from "./components/Home.vue";
 import Dashboard from "./components/Dashboard.vue";
-
+import store from "./index";
 const routes = [
     {
         path: "/register",
@@ -16,7 +16,7 @@ const routes = [
     },
     {
         path: "/login",
-        name: "Login",
+        name: "login",
         component: Login,
         meta: {
             requiresAuth: false,
@@ -39,7 +39,6 @@ const routes = [
             requiresAuth: true,
         },
     },
-
 ];
 
 const router = createRouter({
@@ -48,10 +47,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-    if (to.meta.requiresAuth && !localStorage.getItem("token")) {
+    if (to.meta.requiresAuth && store.getters.getIsAuthenticated == false) {
         return { name: "Login" };
     }
-    if (to.meta.requiresAuth == false && localStorage.getItem("token")) {
+    if (to.meta.requiresAuth == false && store.getters.getIsAuthenticated != false) {
         return { name: "dashboard", params: 1 };
     }
 });

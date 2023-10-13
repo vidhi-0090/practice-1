@@ -12,8 +12,8 @@ import store from "./index.js";
 import router from "./router";
 import jQuery from 'jquery';
 
-window.$ = jQuery;
 library.add(fas);
+window.$ = jQuery;
 const app = createApp(App);
 
 app.component('font-awesome-icon', FontAwesomeIcon);

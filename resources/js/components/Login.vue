@@ -6,12 +6,18 @@
             </h1>
         </div>
     </header>
+
     <main>
         <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             <div class="form_wrapper">
                 <div class="form_container">
                     <div class="title_container">
                         <h2>Login Form</h2>
+                    </div>
+                    <div v-if="errors">
+                        <p style="color: red">
+                            {{ errors }}
+                        </p>
                     </div>
                     <div class="row clearfix">
                         <div class="">
@@ -79,13 +85,18 @@ import { useVuelidate } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
 import axios from "axios";
 import { useStore } from "vuex";
-
+import Swal from "sweetalert2";
+import { ref } from "vue";
 export default {
     setup: () => ({
         v$: useVuelidate(),
         store: useStore(),
     }),
-    data: () => ({ password: "", email: "" }),
+    data: () => ({
+        password: "",
+        email: "",
+        errors: "",
+    }),
     validations() {
         return {
             password: { required },
@@ -94,6 +105,12 @@ export default {
     },
 
     methods: {
+        methods: {
+            showAlert(options) {
+                Swal.fire(options);
+            },
+        },
+
         async login() {
             const result = await this.v$.$validate();
             if (!result) {
@@ -111,27 +128,29 @@ export default {
                             const token = res.data.data.token;
                             const user_id = res.data.data.id;
 
-                            localStorage.setItem("token", token);
-
-                            console.log(
-                                "Before commit:",
-                                this.store.state.isAuthenticated
-                            );
-                            this.store.commit("setAuthenticationStatus", true);
-                            console.log(
-                                "After commit:",
-                                this.store.state.isAuthenticated
-                            );
-
-                            this.$router.push({
-                                name: "dashboard",
-                                params: { user_id: user_id },
+                            Swal.fire({
+                                icon: "success",
+                                title: "Login Successful",
+                                text: "You will be redirected to the dashboard.",
+                                showConfirmButton: true,
+                            }).then(() => {
+                                this.store.dispatch(
+                                    "setAuthenticated",
+                                    res.data.data.token
+                                );
+                                this.$router.push({
+                                    name: "dashboard",
+                                    params: { user_id: user_id },
+                                });
                             });
+                        } else {
+                            console.log(res.data.message);
+                            if (res.data.status == false) {
+                                this.errors = res.data.message;
+                            }
                         }
                     })
-                    .catch((error) => {
-                        // error.response.status Check status code
-                    });
+                    .catch((error) => {});
             } catch (error) {
                 console.error("Error:", error);
             }

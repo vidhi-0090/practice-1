@@ -879,37 +879,39 @@
                                     <form @submit.prevent="changePassword()">
                                         <div class="input_field">
                                             <input
-                                                type="text"
+                                                type="password"
                                                 name="current_password"
                                                 placeholder="Current Password"
                                                 v-model="current_password"
                                             />
                                             <p style="color: red">
-                                                {{ errors.name }}
+                                                {{ errors.current_password }}
                                             </p>
                                         </div>
 
                                         <div class="input_field">
                                             <input
-                                                type="text"
+                                                type="password"
                                                 name="password"
                                                 placeholder="Password"
                                                 v-model="password"
                                             />
-                                            <p style="color: red" >
+                                            <p style="color: red">
                                                 {{ errors.password }}
                                             </p>
                                         </div>
 
                                         <div class="input_field">
                                             <input
-                                                type="text"
+                                                type="password"
                                                 name="password_confirmation"
                                                 placeholder="Password Confirmation"
                                                 v-model="password_confirmation"
                                             />
                                             <p style="color: red">
-                                                {{ errors.password_confirmation }}
+                                                {{
+                                                    errors.password_confirmation
+                                                }}
                                             </p>
                                         </div>
                                         <input
@@ -917,7 +919,6 @@
                                             type="submit"
                                             value="Change Password"
                                         />
-
                                     </form>
                                 </div>
                             </div>
@@ -936,7 +937,7 @@ import axios from "axios";
 import Modal from "./Modal.vue";
 import _ from "lodash";
 import DataTable from "datatables.net-dt";
-
+import Swal from "sweetalert2";
 import "datatables.net-bs4";
 
 const showModal = ref(false);
@@ -986,7 +987,10 @@ const errors = reactive({
     price: "",
     released_year: "",
     status: "",
-    description: "", // Add a key for image errors
+    description: "",
+    password: "",
+    current_password: "",
+    password_confirmation:""
 });
 const success = reactive({});
 const searchDataNotFound = reactive({});
@@ -1003,7 +1007,7 @@ const datatable = ref(null);
 
 const setPage = async (p) => {
     try {
-        const user_data = await axios.get(baseUrl + "api/user/" + user_id);
+        const user_data = await axios.get(baseUrl + "api/users");
         bookData.value = user_data.data.book;
         bookDataLength.value = bookData.value.length;
     } catch (error) {
@@ -1037,12 +1041,14 @@ const paginator = (totalItems, currentPage) => {
 
 const fetchUser = async () => {
     try {
-        const user_data = await axios.get(baseUrl + "api/user/" + user_id);
+        const user_data = await axios.get(baseUrl + "api/users");
         username.value = user_data.data.data.name;
         email.value = user_data.data.data.email;
         bookData.value = user_data.data.book;
         bookDataLength.value = bookData.value.length;
-    } catch (error) {}
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 const searchData = async () => {
@@ -1067,7 +1073,7 @@ const searchData = async () => {
 
 const saveData = async () => {
     try {
-        const response = await axios.post(baseUrl + "api/addBook", {
+        const response = await axios.post(baseUrl + "api/books", {
             name: form.value.name,
             description: form.value.description,
             no_of_page: form.value.no_of_page,
@@ -1081,10 +1087,16 @@ const saveData = async () => {
         if (response.data.status === true) {
             success.value = response.data.message;
             showModal.value = false;
-            datatable.value = $(".bookDatatable").DataTable().ajax.reload();
+            Swal.fire({
+                icon: "success",
+                title: "Add Book-Data Successful",
+                showConfirmButton: true,
+            }).then(() => {
+                datatable.value = $(".bookDatatable").DataTable().ajax.reload();
+            });
 
             try {
-                const user_data = await axios.get("/api/user/" + user_id);
+                const user_data = await axios.get("/api/users");
                 username.value = user_data.data.data.name;
                 email.value = user_data.data.data.email;
                 bookData.value = user_data.data.book;
@@ -1107,7 +1119,7 @@ const saveData = async () => {
 const modalOpen = async (id) => {
     bookId.value = id;
     try {
-        const book_data = await axios.get(baseUrl + "api/getBookData/" + id);
+        const book_data = await axios.get(baseUrl + "api/books/" + id);
         editName.value = book_data.data.data.name;
         editDescription.value = book_data.data.data.description;
         editCategory.value = book_data.data.data.category;
@@ -1123,7 +1135,7 @@ const modalOpen = async (id) => {
 
 const editData = async () => {
     try {
-        const edit_response = await axios.post(baseUrl + "api/editBook", {
+        const edit_response = await axios.put(baseUrl + "api/books/" + bookId.value, {
             name: editName.value,
             description: editDescription.value,
             no_of_page: editNo_of_page.value,
@@ -1138,10 +1150,16 @@ const editData = async () => {
         if (edit_response.data.status === true) {
             success.value = edit_response.data.message;
             showEditModal.value = false;
-            datatable.value = $(".bookDatatable").DataTable().ajax.reload();
+            Swal.fire({
+                icon: "success",
+                title: "Successful Edit Book-Data",
+                showConfirmButton: true,
+            }).then(() => {
+                datatable.value = $(".bookDatatable").DataTable().ajax.reload();
+            });
 
             try {
-                const user_data = await axios.get("/api/user/" + user_id);
+                const user_data = await axios.get("/api/users");
                 username.value = user_data.data.data.name;
                 email.value = user_data.data.data.email;
                 bookData.value = user_data.data.book;
@@ -1168,16 +1186,22 @@ const modalDelete = async (id) => {
 const deleteData = async () => {
     try {
         console.log(bookId.value);
-        const delete_res = await axios.get(
-            baseUrl + "api/deleteData/" + bookId.value
+        const delete_res = await axios.delete(
+            baseUrl + "api/books/" + bookId.value
         );
         console.log(delete_res);
         if (delete_res.data.status === true) {
             console.log(delete_res.data.status);
             showDeleteModal.value = false;
-            datatable.value = $(".bookDatatable").DataTable().ajax.reload();
+            Swal.fire({
+                icon: "success",
+                title: "Successful Delete Book-Data",
+                showConfirmButton: true,
+            }).then(() => {
+                datatable.value = $(".bookDatatable").DataTable().ajax.reload();
+            });
             try {
-                const user_data = await axios.get("/api/user/" + user_id);
+                const user_data = await axios.get("/api/users");
                 username.value = user_data.data.data.name;
                 email.value = user_data.data.data.email;
                 bookData.value = user_data.data.book;
@@ -1190,7 +1214,6 @@ const deleteData = async () => {
     }
 };
 
-
 const changePassword = async () => {
     try {
         const response = await axios.post(baseUrl + "api/changePassword", {
@@ -1201,10 +1224,14 @@ const changePassword = async () => {
         if (response.data.status === true) {
             success.value = response.data.message;
             showPasswordModel.value = false;
+            Swal.fire({
+                icon: "success",
+                title: "Successful Change Password",
+                showConfirmButton: true,
+            }).then(() => {
 
+            });
         } else {
-            console.log(response.data);
-            // errors.value = response.data.message;
             const responseErrors = response.data.message;
             for (const field in responseErrors) {
                 if (field in errors) {
@@ -1223,7 +1250,7 @@ const closeModal = async () => {
     showModal.value = false;
     showPasswordModel.value = false;
     try {
-        const user_data = await axios.get("/api/user/" + user_id);
+        const user_data = await axios.get("/api/users");
         username.value = user_data.data.data.name;
         email.value = user_data.data.data.email;
         bookData.value = user_data.data.book;
@@ -1234,7 +1261,7 @@ const initDataTable = () => {
     datatable.value = $(".bookDatatable").DataTable({
         processing: true,
         serverSide: true,
-        ajax: baseUrl + "api/serverBooks",
+        ajax: baseUrl + "api/books",
         columns: [
             { data: "id", name: "id" },
             { data: "name", name: "name" },

@@ -8,11 +8,41 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use DataTables;
 
 class BookController extends Controller
 {
-    public function addBook(Request $request)
+
+    //serverBooks -> index : http://127.0.0.1:8000/api/books  :: get
+    public function index(Request $request): JsonResponse
+    {
+        $query = Book::query()->where('userId', Auth::user()->id);
+
+        return datatables()->eloquent($query)
+            ->addColumn('status', function ($book) {
+                if ($book->status == 1) {
+                    return 'True';
+                } else {
+                    return 'False';
+                }
+            })
+
+            ->addColumn('action', function ($book) {
+                return '
+                 <button style="margin-top:2px;" data-book-id="' . $book->id . '"
+                     class="edit-button bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                     Edit
+                 </button>
+
+                 <button style="margin-top:2px;" data-book-id="' . $book->id . '"
+                         class="delete-button bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                         Delete
+                 </button>';
+            })
+            ->toJson();
+    }
+
+    // addBook -> store : http://127.0.0.1:8000/api/books  :: post
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
@@ -55,7 +85,8 @@ class BookController extends Controller
         ]);
     }
 
-    public function getBookData($id)
+    //getBookData -> show : http://127.0.0.1:8000/api/books/1  ::  get
+    public function show($id)
     {
         $data = Book::find($id);
         if ($data) {
@@ -72,9 +103,11 @@ class BookController extends Controller
         }
     }
 
-    public function editBook(Request $request)
+    // editBook -> update : http://127.0.0.1:8000/api/books/1  :: put/patch
+    public function update(Request $request, $id)
     {
-
+        // print_r($request->get('name'));
+        // exit();
         $validator = Validator::make($request->all(), [
             'name' => ['required'],
             'description' => ['required'],
@@ -126,7 +159,8 @@ class BookController extends Controller
         }
     }
 
-    public function deleteData($id)
+    //deleteData -> destroy  : http://127.0.0.1:8000/api/books/1  :: delete
+    public function destroy($id)
     {
         $data = Book::find($id)->delete();
 
@@ -180,35 +214,6 @@ class BookController extends Controller
             ]);
         }
     }
-
-    public function serverBooks(Request $request): JsonResponse
-    {
-        $query = Book::query()->where('userId', Auth::user()->id);
-
-        return datatables()->eloquent($query)
-            ->addColumn('status', function ($book) {
-                if ($book->status == 1) {
-                    return 'True';
-                } else {
-                    return 'False';
-                }
-            })
-
-            ->addColumn('action', function ($book) {
-                return '
-                <button style="margin-top:2px;" data-book-id="' . $book->id . '"
-                    class="edit-button bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-                    Edit
-                </button>
-
-                <button style="margin-top:2px;" data-book-id="' . $book->id . '"
-                        class="delete-button bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-                        Delete
-                </button>';
-            })
-            ->toJson();
-    }
-
 
     public function booksFilter(Request $request): JsonResponse
     {

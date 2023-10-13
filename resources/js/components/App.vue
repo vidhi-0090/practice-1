@@ -18,7 +18,7 @@
                             </router-link>
 
                             <router-link
-                            v-if="!isAuthenticated"
+                            v-if=" store.getters.getIsAuthenticated == 0"
                                 to="/register"
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                             >
@@ -26,7 +26,7 @@
                             </router-link>
 
                             <router-link
-                            v-if="!isAuthenticated"
+                            v-if="store.getters.getIsAuthenticated == 0"
                                 to="/login"
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                             >
@@ -34,7 +34,7 @@
                             </router-link>
 
                             <router-link
-                            v-if="isAuthenticated"
+                            v-if="store.getters.getIsAuthenticated != 0"
                                 to="/dashboard/2"
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                             >
@@ -43,7 +43,7 @@
 
 
                             <button
-                            v-if="isAuthenticated"
+                            v-if="store.getters.getIsAuthenticated != 0"
                                 @click="logout"
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                             >
@@ -67,11 +67,14 @@ import { computed } from "vue";
 const store = useStore();
 const router = useRouter();
 
-const isAuthenticated = computed(() => store.state.isAuthenticated);
-
 function logout() {
-    store.commit("setAuthenticationStatus", false);
-    localStorage.removeItem("token");
+    store.dispatch('removeAuthenticated');
     router.push("/login");
 }
+if(localStorage.getItem("token")){
+    store.dispatch("setAuthenticated",localStorage.getItem("token"));
+}else if(!localStorage.getItem("token")){
+    store.dispatch('removeAuthenticated');
+}
+
 </script>
