@@ -51,7 +51,7 @@ class BookController extends Controller
             'author' => ['required'],
             'category' => ['required'],
             'price' => ['required', 'numeric'],
-            'released_year' => ['required'],
+            'released_year' => ['required','numeric','before:'.date('Y')],
             'status' => ['required'],
         ]);
 
@@ -115,7 +115,7 @@ class BookController extends Controller
             'author' => ['required'],
             'category' => ['required'],
             'price' => ['required', 'numeric'],
-            'released_year' => ['required'],
+            'released_year' => ['required','numeric','before:'.date('Y')],
             'status' => ['required'],
         ]);
 

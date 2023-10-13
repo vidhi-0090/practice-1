@@ -26,7 +26,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth')->group(function () {
 
-    Route::any('/users', [UserController::class, 'get_users'])->name('get_users');
 
     Route::resource('books', BookController::class);
 
@@ -37,6 +36,7 @@ Route::middleware('auth')->group(function () {
     // Route::get('/deleteData/{id}', [BookController::class, 'deleteData'])->name('deleteData');
     // Route::any('/serverBooks', [BookController::class, 'serverBooks'])->name('serverBooks');
 
+    Route::any('/users', [UserController::class, 'get_users'])->name('get_users');
     Route::get('/searchData', [BookController::class, 'searchData'])->name('searchData');
     Route::any('/booksFilter', [BookController::class, 'booksFilter'])->name('booksFilter');
     Route::any('/serverBooksFilter', [BookController::class, 'serverBooksFilter'])->name('serverBooksFilter');
@@ -50,3 +50,5 @@ Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'check']);
 Route::post('/logout', [LoginController::class, 'logout']);
 Route::get('/dashboard/{id}', [HomeController::class, 'dashboard'])->name('home');
+
+Route::get('todo', [TodoController::class, 'todo'])->name('todo');

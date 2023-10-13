@@ -1,17 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
-class ExampleController extends Controller
+class TodoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+
+        return Inertia::render('Home');
     }
 
     /**

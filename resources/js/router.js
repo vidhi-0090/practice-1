@@ -4,6 +4,7 @@ import Login from "./components/Login.vue";
 import Logout from "./components/Logout.vue";
 import Home from "./components/Home.vue";
 import Dashboard from "./components/Dashboard.vue";
+import Todo from "./components/Todo.vue";
 import store from "./index";
 const routes = [
     {
@@ -30,7 +31,10 @@ const routes = [
             requiresAuth: true,
         },
     },
-    { path: "/home", name: "Home", component: Home },
+    {   path: "/home",
+        name: "Home",
+        component: Home
+    },
     {
         path: "/dashboard/:user_id",
         name: "dashboard",
@@ -38,6 +42,11 @@ const routes = [
         meta: {
             requiresAuth: true,
         },
+    },
+    {
+        path: "/todo",
+        name: "Todo",
+        component: Todo,
     },
 ];
 
@@ -50,7 +59,10 @@ router.beforeEach((to, from) => {
     if (to.meta.requiresAuth && store.getters.getIsAuthenticated == false) {
         return { name: "Login" };
     }
-    if (to.meta.requiresAuth == false && store.getters.getIsAuthenticated != false) {
+    if (
+        to.meta.requiresAuth == false &&
+        store.getters.getIsAuthenticated != false
+    ) {
         return { name: "dashboard", params: 1 };
     }
 });

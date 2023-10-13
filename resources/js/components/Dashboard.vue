@@ -566,7 +566,7 @@
                                                     icon="certificate"
                                             /></span>
                                             <input
-                                                type="text"
+                                                type="hidden"
                                                 name="bookId"
                                                 placeholder="bookId"
                                                 v-model="bookId"
