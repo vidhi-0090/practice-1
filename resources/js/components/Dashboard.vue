@@ -147,6 +147,7 @@
                         :key="data"
                         style="border: 1px solid black"
                     > -->
+
                     <tr
                         class=""
                         v-for="data in collection"
@@ -990,7 +991,7 @@ const errors = reactive({
     description: "",
     password: "",
     current_password: "",
-    password_confirmation:""
+    password_confirmation: "",
 });
 const success = reactive({});
 const searchDataNotFound = reactive({});
@@ -1133,17 +1134,20 @@ const modalOpen = async (id) => {
 
 const editData = async () => {
     try {
-        const edit_response = await axios.put(baseUrl + "api/books/" + bookId.value, {
-            name: editName.value,
-            description: editDescription.value,
-            no_of_page: editNo_of_page.value,
-            author: editAuthor.value,
-            category: editCategory.value,
-            price: editPrice.value,
-            released_year: editReleased_year.value,
-            status: editStatus.value,
-            bookId: bookId.value,
-        });
+        const edit_response = await axios.put(
+            baseUrl + "api/books/" + bookId.value,
+            {
+                name: editName.value,
+                description: editDescription.value,
+                no_of_page: editNo_of_page.value,
+                author: editAuthor.value,
+                category: editCategory.value,
+                price: editPrice.value,
+                released_year: editReleased_year.value,
+                status: editStatus.value,
+                bookId: bookId.value,
+            }
+        );
 
         if (edit_response.data.status === true) {
             success.value = edit_response.data.message;
@@ -1223,10 +1227,9 @@ const changePassword = async () => {
                 icon: "success",
                 title: "Successful Change Password",
                 showConfirmButton: true,
-            }).then(() => {
-
-            });
+            }).then(() => {});
         } else {
+            console.log(response.data);
             const responseErrors = response.data.message;
             for (const field in responseErrors) {
                 if (field in errors) {
@@ -1306,19 +1309,49 @@ $(document).on("change", "#bookPages", function () {
         .load();
 });
 
-$(document).on("change", "#book-Pages", function () {
+// $(document).on("change", "#book-Pages", async function () {
+//     var testId = $(this).val();
+//     $.ajax({
+//         type: "GET",
+//         url: baseUrl + "api/booksFilter/?value=" + testId,
+//         data: {},
+//         success: function (data) {
+
+//             bookData.value = data.book;
+//             bookDataLength.value = bookData.value.length;
+//             updateCollection();
+//             updatePaginator();
+//             updateSetPage(1);
+//         },
+
+//     });
+// });
+
+$(document).on("change", "#book-Pages", async function () {
     var testId = $(this).val();
-    $.ajax({
-        type: "GET",
-        url: baseUrl + "api/booksFilter/?value=" + testId,
-        data: {},
-        success: function (data) {
-            console.log(data.book);
-            bookData.value = data.book;
-            bookDataLength.value = bookData.value.length;
-        },
-    });
+    try {
+        const response = await axios.get(baseUrl + "api/booksFilter/?value=" + testId);
+        console.log(response.data.book);
+        bookData.value = response.data.book;
+        bookDataLength.value = bookData.value.length;
+
+        updateCollection();
+        updatePaginator();
+
+    } catch (error) {
+        console.error(error);
+    }
 });
+
+const updateCollection = () => {
+    collection.value = paginate(bookData.value);
+};
+
+const updatePaginator = () => {
+    pagination.value = paginator(bookDataLength.value, 1);
+};
+
+
 
 document.addEventListener("click", (event) => {
     const target = event.target;

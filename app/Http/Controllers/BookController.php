@@ -129,8 +129,6 @@ class BookController extends Controller
             $status = 0;
         } else if ($request->get('status') === true) {
             $status = 1;
-        } else {
-            $status = 0;
         }
 
         $data = Book::where('id', $request->get('bookId'))

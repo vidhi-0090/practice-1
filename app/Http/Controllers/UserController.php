@@ -57,7 +57,7 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'status' => false,
-                'message' => "Current Password Is Not Matched"
+                'message' => array('current_password' => ["0"=>"Current Password Is Not Matched"] )
             ]);
         }
     }
