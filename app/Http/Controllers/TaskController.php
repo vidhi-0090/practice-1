@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Task;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
@@ -45,6 +46,7 @@ class TaskController extends Controller
     public function create($id): JsonResponse
     {
         $data = Task::find($id);
+
         if ($data) {
             return response()->json([
                 'status' => true,
@@ -137,4 +139,6 @@ class TaskController extends Controller
             'message' => "Success"
         ]);
     }
+
+
 }
