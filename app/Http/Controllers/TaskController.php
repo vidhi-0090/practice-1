@@ -46,7 +46,6 @@ class TaskController extends Controller
     public function create($id): JsonResponse
     {
         $data = Task::find($id);
-
         if ($data) {
             return response()->json([
                 'status' => true,
@@ -139,6 +138,4 @@ class TaskController extends Controller
             'message' => "Success"
         ]);
     }
-
-
 }
