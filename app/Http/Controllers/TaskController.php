@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Task;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
@@ -11,22 +12,43 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        return Task::get();
-        // return response()->json([
-        //     'status' => true,
-        //     'data' => $data,
-        //     'message' => "Get Data Successful"
-        // ]);
+
+        $data = Task::query();
+
+        if ($request->get('type') != "") {
+            $type = $request->get('type');
+            switch ($type) {
+
+                case Task::ACTIVE:
+                    $filtered = $data->where('completed', false);
+                    break;
+                case Task::COMPLETED:
+                    $filtered = $data->where('completed', true);
+                    break;
+                default:
+                    $filtered = $data;
+            }
+        }
+        $filtered = $data;
+        $filteredTask = $filtered->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $filteredTask,
+            'count' => count($filteredTask),
+            'message' => "Get Data Successful"
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create($id)
+    public function create($id): JsonResponse
     {
         $data = Task::find($id);
+
         if ($data) {
             return response()->json([
                 'status' => true,
@@ -44,7 +66,7 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
 
 
@@ -76,7 +98,6 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -90,11 +111,12 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): JsonResponse
     {
         $data = Task::where('id', $id)
             ->update([
                 'completed' => $request->get('completed'),
+                'name' => $request->get('name'),
             ]);
         if ($data) {
             return response()->json([
@@ -113,7 +135,7 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $data = Task::find($id)->delete();
 
@@ -122,4 +144,6 @@ class TaskController extends Controller
             'message' => "Success"
         ]);
     }
+
+
 }

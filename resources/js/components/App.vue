@@ -1,4 +1,3 @@
-
 <!-- js/components/app.vue -->
 <template>
     <nav class="bg-gray-800">
@@ -18,7 +17,7 @@
                             </router-link>
 
                             <router-link
-                            v-if=" store.getters.getIsAuthenticated == 0"
+                                v-if="authStore.getters.getIsAuthenticated == 0"
                                 to="/register"
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                             >
@@ -26,7 +25,7 @@
                             </router-link>
 
                             <router-link
-                            v-if="store.getters.getIsAuthenticated == 0"
+                                v-if="authStore.getters.getIsAuthenticated == 0"
                                 to="/login"
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                             >
@@ -34,13 +33,12 @@
                             </router-link>
 
                             <router-link
-                            v-if="store.getters.getIsAuthenticated != 0"
+                                v-if="authStore.getters.getIsAuthenticated != 0"
                                 to="/dashboard/2"
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                             >
                                 Dashboard
                             </router-link>
-
 
                             <router-link
                                 to="/todo"
@@ -50,13 +48,12 @@
                             </router-link>
 
                             <button
-                            v-if="store.getters.getIsAuthenticated != 0"
+                                v-if="authStore.getters.getIsAuthenticated != 0"
                                 @click="logout"
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                             >
                                 Logout
                             </button>
-
                         </div>
                     </div>
                 </div>
@@ -68,20 +65,18 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import authStore from "../store/auth.js";
 import { computed } from "vue";
 
-const store = useStore();
 const router = useRouter();
 
 function logout() {
-    store.dispatch('removeAuthenticated');
+    authStore.dispatch("removeAuthenticated");
     router.push("/login");
 }
-if(localStorage.getItem("token")){
-    store.dispatch("setAuthenticated",localStorage.getItem("token"));
-}else if(!localStorage.getItem("token")){
-    store.dispatch('removeAuthenticated');
+if (localStorage.getItem("token")) {
+    authStore.dispatch("setAuthenticated", localStorage.getItem("token"));
+} else if (!localStorage.getItem("token")) {
+    authStore.dispatch("removeAuthenticated");
 }
-
 </script>

@@ -347,6 +347,24 @@ button.swal2-confirm.swal2-styled {
     background-color: #1f2937 !important;
 
 }
+
+[type='checkbox'][data-v-6280eefe]:checked {
+    -moz-animation: check 0.8s ease 0s running;
+    -webkit-animation: check 0.8s ease 0s running;
+    animation: check 0.8s ease 0s running;
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    border-color: #368d1c;
+
+    background-color: #48a537;
+}
+
+
+[type='checkbox'][data-v-6280eefe]:focus {
+    --tw-ring-color: #2ea528;
+}
+
 @-webkit-keyframes check {
     0% {
         height: 0;

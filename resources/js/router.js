@@ -4,8 +4,8 @@ import Login from "./components/Login.vue";
 import Logout from "./components/Logout.vue";
 import Home from "./components/Home.vue";
 import Dashboard from "./components/Dashboard.vue";
-import Todo from "./components/Todo.vue";
-import store from "./index";
+import Todo from "./components/TodoApp.vue";
+import store from "./store/auth.js";
 const routes = [
     {
         path: "/register",
