@@ -18,12 +18,9 @@ import { ref } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import todoStore from "../store/todo.js";
-import { inject } from 'vue';
-// import { useStore } from "vuex";
-// const store = useStore();
+import { inject } from "vue";
 
-const baseUrl = inject('baseUrl');
-
+const baseUrl = inject("baseUrl");
 
 const newTask = ref({
     name: "",
@@ -31,9 +28,7 @@ const newTask = ref({
 });
 
 const addTodo = async () => {
-    // console.log(newTask.value.name);
     try {
-        // console.log(baseUrl.value);
         const res = await axios.post(baseUrl.value + "api/tasks", {
             name: newTask.value.name,
             completed: newTask.value.completed,

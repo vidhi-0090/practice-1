@@ -44,7 +44,6 @@ const editedName = ref("");
 let type = 1;
 
 const removeTodo = async (id) => {
-    // console.log(baseUrl.value + "api/tasks/" + id);
     try {
         const result = await Swal.fire({
             title: "Delete Task",
@@ -77,7 +76,6 @@ const removeTodo = async (id) => {
 };
 
 const toggleCheck = async (todo) => {
-    // console.log(todo.completed);
     todo.completed = !todo.completed;
     try {
         const result = await Swal.fire({
@@ -113,7 +111,6 @@ const toggleCheck = async (todo) => {
         }
         todoStore.dispatch("getTodos", type);
     } catch (error) {}
-
 };
 
 const startEditing = (todo) => {

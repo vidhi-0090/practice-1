@@ -17,7 +17,6 @@ class UserController extends Controller
     {
         $data = User::find(Auth::user()->id);
         $book = Book::where('userId', $data->id)->get();
-
         return response()->json([
             'status' => true,
             'data' => $data,
@@ -43,7 +42,6 @@ class UserController extends Controller
         }
 
         $user = User::find(Auth::user()->id);
-
         if (Hash::check($request->get('current_password'), $user->password)) {
 
             $user->update([

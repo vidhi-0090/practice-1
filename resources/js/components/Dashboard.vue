@@ -1330,14 +1330,15 @@ $(document).on("change", "#bookPages", function () {
 $(document).on("change", "#book-Pages", async function () {
     var testId = $(this).val();
     try {
-        const response = await axios.get(baseUrl + "api/booksFilter/?value=" + testId);
+        const response = await axios.get(
+            baseUrl + "api/booksFilter/?value=" + testId
+        );
         console.log(response.data.book);
         bookData.value = response.data.book;
         bookDataLength.value = bookData.value.length;
 
         updateCollection();
         updatePaginator();
-
     } catch (error) {
         console.error(error);
     }
@@ -1350,8 +1351,6 @@ const updateCollection = () => {
 const updatePaginator = () => {
     pagination.value = paginator(bookDataLength.value, 1);
 };
-
-
 
 document.addEventListener("click", (event) => {
     const target = event.target;
@@ -1380,7 +1379,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 @import "../../css/app.css";
-
 .status-true-class {
     width: 50%;
     text-align: center;

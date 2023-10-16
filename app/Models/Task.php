@@ -12,11 +12,12 @@ class Task extends Model
     public const ACTIVE = 2;
     public const COMPLETED = 3;
 
+    //getter attribute
     public function getCompletedAttribute($value)
     {
         return boolval($value);
     }
-
+    //setter attriibute
     public function setCompletedAttribute($value)
     {
         $this->attributes['completed'] = ($value) ? 1 : 0;

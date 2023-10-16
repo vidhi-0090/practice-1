@@ -14,9 +14,7 @@ class TaskController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-
         $data = Task::query();
-
         if ($request->get('type') != "") {
             $type = $request->get('type');
             switch ($type) {
@@ -48,7 +46,6 @@ class TaskController extends Controller
     public function create($id): JsonResponse
     {
         $data = Task::find($id);
-
         if ($data) {
             return response()->json([
                 'status' => true,
@@ -68,8 +65,6 @@ class TaskController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-
-
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255']
         ]);
@@ -138,12 +133,9 @@ class TaskController extends Controller
     public function destroy($id): JsonResponse
     {
         $data = Task::find($id)->delete();
-
         return response()->json([
             'status' => true,
             'message' => "Success"
         ]);
     }
-
-
 }
