@@ -125,12 +125,10 @@ class BookController extends Controller
                 'message' => $validator->errors()
             ]);
         }
-        if ($request->get('status') === false) {
+        if ($request->get('status') == false) {
             $status = 0;
-        } else if ($request->get('status') === true) {
+        } else if ($request->get('status') == true) {
             $status = 1;
-        } else {
-            $status = 0;
         }
 
         $data = Book::where('id', $request->get('bookId'))

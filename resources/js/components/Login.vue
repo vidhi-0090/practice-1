@@ -81,16 +81,18 @@
 </template>
 
 <script>
+import authStore from "../store/auth.js";
 import { useVuelidate } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
 import axios from "axios";
 import { useStore } from "vuex";
 import Swal from "sweetalert2";
-import { ref } from "vue";
+
 export default {
     setup: () => ({
         v$: useVuelidate(),
         store: useStore(),
+        authStoreInstance: authStore,
     }),
     data: () => ({
         password: "",
@@ -134,7 +136,7 @@ export default {
                                 text: "You will be redirected to the dashboard.",
                                 showConfirmButton: true,
                             }).then(() => {
-                                this.store.dispatch(
+                                this.authStoreInstance.dispatch(
                                     "setAuthenticated",
                                     res.data.data.token
                                 );
@@ -142,6 +144,15 @@ export default {
                                     name: "dashboard",
                                     params: { user_id: user_id },
                                 });
+
+                                // this.authStore.dispatch(
+                                //     "setAuthenticated",
+                                //     res.data.data.token
+                                // );
+                                // this.$router.push({
+                                //     name: "dashboard",
+                                //     params: { user_id: user_id },
+                                // });
                             });
                         } else {
                             console.log(res.data.message);

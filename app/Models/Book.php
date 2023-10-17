@@ -19,4 +19,14 @@ class Book extends Model
     public const SORT_BY_RELEASED_YEAR = 8;
     public const SORT_BY_BOOK_AUTHOR = 9;
     public const SORT_BY_BOOK_PRICE = 10;
+
+    public function getStatusAttribute($value)
+    {
+        return boolval($value);
+    }
+    //setter attriibute
+    public function setStatusAttribute($value)
+    {
+        $this->attributes['status'] = ($value) ? 1 : 0;
+    }
 }

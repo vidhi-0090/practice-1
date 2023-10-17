@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth')->group(function () {
-
 
     Route::resource('books', BookController::class);
 
@@ -51,4 +51,4 @@ Route::post('/login', [LoginController::class, 'check']);
 Route::post('/logout', [LoginController::class, 'logout']);
 Route::get('/dashboard/{id}', [HomeController::class, 'dashboard'])->name('home');
 
-Route::get('todo', [TodoController::class, 'todo'])->name('todo');
+Route::resource('tasks', TaskController::class);
