@@ -13,7 +13,7 @@ class NoteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $data = Notes::get();
         if ($data) {
@@ -33,7 +33,7 @@ class NoteController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
         //
     }
@@ -73,7 +73,19 @@ class NoteController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Notes::find($id);
+        if ($data) {
+            return response()->json([
+                'status' => true,
+                'data' => $data,
+                'message' => "Get Data Successful"
+            ]);
+        } else {
+            return response()->json([
+                'status' => true,
+                'message' => "Data NOt Found"
+            ]);
+        }
     }
 
     /**
@@ -89,7 +101,36 @@ class NoteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'notes' => ['required', 'string'],
+            'dateTime' => ['required', 'after:'.date('')]
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()
+            ]);
+        }
+
+        $data = Notes::find($id)
+            ->update([
+                'notes' => $request->get('notes'),
+                'dateTime' => $request->get('dateTime')
+            ]);
+
+        if ($data) {
+            return response()->json([
+                'status' => true,
+                'data' => $data,
+                'message' => "Success"
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => "Failed"
+            ]);
+        }
     }
 
     /**

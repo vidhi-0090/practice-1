@@ -48,7 +48,7 @@
                                 style="
                                     border: 1px solid black;
                                     padding: 10px;
-                                    width: 8%;
+                                    width: 13%;
                                 "
                             >
                                 <span>Action</span>
@@ -62,17 +62,37 @@
                             :key="data.id"
                             style="border: 1px solid black; width: 100%"
                         >
-                            <td style="border: 1px solid black; padding: 5px">
+                            <td
+                                style="
+                                    border: 1px solid black;
+                                    padding: 5px;
+                                    text-align: center;
+                                "
+                            >
                                 {{ index + 1 }}
                             </td>
 
                             <td style="border: 1px solid black; padding: 5px">
                                 {{ data.notes }}
                             </td>
-                            <td style="border: 1px solid black; padding: 5px">
+                            <td
+                                style="
+                                    border: 1px solid black;
+                                    padding: 5px;
+                                    text-align: center;
+                                "
+                            >
                                 {{ data.dateTime }}
                             </td>
                             <td style="border: 1px solid black; padding: 10px">
+                                <button
+                                    id="show-modal"
+                                    @click="modalOpen((id = data.id))"
+                                    style="margin: 5px 5px"
+                                    class="bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                                >
+                                    Edit
+                                </button>
                                 <button
                                     @click="deleteNotes((noteId = data.id))"
                                     style="margin: 5px 5px"
@@ -160,6 +180,105 @@
                 </div>
             </template>
         </modal>
+
+        <modal
+            :show="showEditModal"
+            @close="showEditModal = false"
+            id="showEditModal"
+        >
+            <template #header>
+                <button
+                    type="button"
+                    style="
+                        float: right;
+                        border: 1px solid #cccccc;
+                        padding: 8px 10px;
+                    "
+                    @click="closeModal()"
+                >
+                    X
+                </button>
+            </template>
+            <template #body>
+                <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+                    <div class="form_wrapper">
+                        <div class="form_container">
+                            <div class="title_container">
+                                <h2>Edit Notes</h2>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="">
+                                    <p
+                                        style="color: red"
+                                        v-for="error in success"
+                                        :key="error"
+                                    >
+                                        <span v-for="err in error" :key="err">
+                                            {{ err }}
+                                        </span>
+                                    </p>
+                                    <form @submit.prevent="editNotes()">
+                                        <div class="input_field">
+                                            <span
+                                                ><font-awesome-icon
+                                                    icon="certificate"
+                                            /></span>
+                                            <input
+                                                type="hidden"
+                                                name="id"
+                                                placeholder="editId"
+                                                v-model="editId"
+                                                readonly
+                                            />
+                                        </div>
+
+                                        <div class="input_field">
+                                            <span
+                                                ><font-awesome-icon icon="book"
+                                            /></span>
+                                            <textarea
+                                                type="text"
+                                                name="notes"
+                                                placeholder="Notes"
+                                                v-model="editNote"
+                                                style="height: 70px"
+                                            ></textarea>
+                                            <p style="color: red" id="name">
+                                                {{ errors.notes }}
+                                            </p>
+                                        </div>
+                                        <div class="input_field">
+                                            <span
+                                                ><font-awesome-icon
+                                                    icon="address-card"
+                                            /></span>
+                                            <input
+                                                type="date"
+                                                name="dateTime"
+                                                placeholder="editDateTime"
+                                                v-model="editDateTime"
+                                            />
+                                            <p
+                                                style="color: red"
+                                                id="description"
+                                            >
+                                                {{ errors.dateTime }}
+                                            </p>
+                                        </div>
+
+                                        <input
+                                            class="button"
+                                            type="submit"
+                                            value="Submit"
+                                        />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </modal>
     </Teleport>
 </template>
 
@@ -176,8 +295,12 @@ const baseUrl = inject("baseUrl");
 const router = useRouter();
 const user_id = ref(0);
 const showModal = ref(false);
+const showEditModal = ref(false);
 const notes = ref("");
 const dateTime = ref("");
+const editId = ref("");
+const editNote = ref("");
+const editDateTime = ref("");
 const success = ref("");
 const errors = reactive({
     notes: "",
@@ -294,13 +417,89 @@ const deleteNotes = async (noteId) => {
                         icon: "success",
                         title: "Successful Delete Note",
                         showConfirmButton: true,
-                        timer: 1500,
+                        // timer: 1500,
                     });
                     notesStore.dispatch("getNotes");
                 }
             } catch (error) {}
         }
     } catch (error) {}
+};
+
+const modalOpen = async (id) => {
+    try {
+        const res = await axios.get(baseUrl.value + "api/notes/" + id);
+        console.log(res);
+        editId.value = res.data.data.id;
+        editNote.value = res.data.data.notes;
+        editDateTime.value = res.data.data.dateTime;
+
+        showEditModal.value = true;
+    } catch (error) {}
+};
+
+const editNotes = async () => {
+    try {
+        errors.notes = "";
+
+        if (!notesPattern.test(editNote.value)) {
+            errors.notes = "Notes must not be empty.";
+            return;
+        }
+
+        const currentDatetime = new Date();
+        const selectedDatetime = new Date(editDateTime.value);
+        if (selectedDatetime <= currentDatetime) {
+            errors.dateTime = "Date and time must be in the future.";
+            return;
+        } else {
+            errors.dateTime = "";
+        }
+
+        let existingNotes = JSON.parse(localStorage.getItem("notesData"));
+
+        if (!Array.isArray(existingNotes)) {
+            existingNotes = [];
+        }
+
+        const response = await axios.put(
+            baseUrl.value + "api/notes/" + editId.value,
+            {
+                notes: editNote.value,
+                dateTime: editDateTime.value,
+            }
+        );
+
+        if (response.data.status === true) {
+            const noteIndex = existingNotes.findIndex(
+                (note) => note.id === editId.value
+            );
+
+            if (noteIndex !== -1) {
+                existingNotes[noteIndex].notes = editNote.value;
+                existingNotes[noteIndex].dateTime = editDateTime.value;
+            }
+            localStorage.setItem("notesData", JSON.stringify(existingNotes));
+
+            showEditModal.value = false;
+            Swal.fire({
+                icon: "success",
+                title: "Edit Note Successful",
+                showConfirmButton: true,
+            });
+        } else {
+            console.log(response);
+            const responseErrors = response.data.message;
+            for (const field in responseErrors) {
+                if (field in errors) {
+                    errors[field] = responseErrors[field][0];
+                }
+            }
+        }
+        notesStore.dispatch("getNotes");
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 const getNotes = computed(() => {
@@ -333,7 +532,8 @@ onMounted(() => {
     color: white;
 }
 
-.slide-fade-leave-active, .slide-fade-enter-active {
+.slide-fade-leave-active,
+.slide-fade-enter-active {
     transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
     // transition: transform 1.3s ease-out, opacity 1.3s ease-out;
 }
