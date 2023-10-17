@@ -6,6 +6,8 @@ import Home from "./components/Home.vue";
 import Dashboard from "./components/Dashboard.vue";
 import Todo from "./components/TodoApp.vue";
 import store from "./store/auth.js";
+import Notes from "./practical-3/Notes.vue";
+
 const routes = [
     {
         path: "/register",
@@ -47,6 +49,14 @@ const routes = [
         path: "/todo",
         name: "Todo",
         component: Todo,
+    },
+    {
+        path: "/notes",
+        name: "notes",
+        component: Notes,
+        meta: {
+            requiresAuth: true,
+        },
     },
 ];
 

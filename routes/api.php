@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\NoteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth')->group(function () {
 
+    Route::get('/dashboard/{id}', [HomeController::class, 'dashboard'])->name('home');
+
     Route::resource('books', BookController::class);
 
     // Route::post('/addBook', [BookController::class, 'addBook'])->name('addBook');
@@ -40,15 +43,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/searchData', [BookController::class, 'searchData'])->name('searchData');
     Route::any('/booksFilter', [BookController::class, 'booksFilter'])->name('booksFilter');
     Route::any('/serverBooksFilter', [BookController::class, 'serverBooksFilter'])->name('serverBooksFilter');
-
     Route::any('/changePassword', [UserController::class, 'changePassword'])->name('changePassword');
-});
 
-Route::post('/logout', 'AuthController@logout');
+    Route::resource('notes', NoteController::class);
+
+});
 
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'check']);
 Route::post('/logout', [LoginController::class, 'logout']);
-Route::get('/dashboard/{id}', [HomeController::class, 'dashboard'])->name('home');
 
 Route::resource('tasks', TaskController::class);

@@ -34,7 +34,7 @@
 
                             <router-link
                                 v-if="authStore.getters.getIsAuthenticated != 0"
-                                to="/dashboard/2"
+                                :to="'/dashboard/' + user_id"
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                             >
                                 Dashboard
@@ -45,6 +45,14 @@
                                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                             >
                                 ToDo
+                            </router-link>
+
+                            <router-link
+                                v-if="authStore.getters.getIsAuthenticated != 0"
+                                :to="'/notes'"
+                                class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                            >
+                                Notes
                             </router-link>
 
                             <button
@@ -66,12 +74,17 @@
 <script setup>
 import { useRouter } from "vue-router";
 import authStore from "../store/auth.js";
-import { computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { inject } from "vue";
+import notesStore from "../store/notes.js";
 
+const baseUrl = inject("baseUrl");
 const router = useRouter();
-
+const user_id = ref(0);
 function logout() {
     authStore.dispatch("removeAuthenticated");
+    notesStore.dispatch("removeNotes",user_id.value);
+    localStorage.clear();
     router.push("/login");
 }
 if (localStorage.getItem("token")) {
@@ -79,4 +92,18 @@ if (localStorage.getItem("token")) {
 } else if (!localStorage.getItem("token")) {
     authStore.dispatch("removeAuthenticated");
 }
+
+const getUserId = async () => {
+    try {
+        const user_data = await axios.get(baseUrl.value + "api/users");
+        user_id.value = user_data.data.data.id;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+onMounted(() => {
+    getUserId();
+});
+
 </script>
