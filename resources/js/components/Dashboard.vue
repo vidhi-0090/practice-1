@@ -1309,24 +1309,6 @@ $(document).on("change", "#bookPages", function () {
         .load();
 });
 
-// $(document).on("change", "#book-Pages", async function () {
-//     var testId = $(this).val();
-//     $.ajax({
-//         type: "GET",
-//         url: baseUrl + "api/booksFilter/?value=" + testId,
-//         data: {},
-//         success: function (data) {
-
-//             bookData.value = data.book;
-//             bookDataLength.value = bookData.value.length;
-//             updateCollection();
-//             updatePaginator();
-//             updateSetPage(1);
-//         },
-
-//     });
-// });
-
 $(document).on("change", "#book-Pages", async function () {
     var testId = $(this).val();
     try {
