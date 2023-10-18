@@ -81,12 +81,8 @@ import notesStore from "../store/notes.js";
 const baseUrl = inject("baseUrl");
 const router = useRouter();
 const user_id = ref(0);
-function logout() {
-    authStore.dispatch("removeAuthenticated");
-    notesStore.dispatch("removeNotes",user_id.value);
-    localStorage.clear();
-    router.push("/login");
-}
+
+
 if (localStorage.getItem("token")) {
     authStore.dispatch("setAuthenticated", localStorage.getItem("token"));
 } else if (!localStorage.getItem("token")) {
@@ -101,6 +97,13 @@ const getUserId = async () => {
         console.log(error);
     }
 };
+
+function logout() {
+    authStore.dispatch("removeAuthenticated");
+    notesStore.dispatch("removeNotes",user_id.value);
+    localStorage.clear();
+    router.push("/login");
+}
 
 onMounted(() => {
     getUserId();
