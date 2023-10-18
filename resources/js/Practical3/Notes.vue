@@ -1,11 +1,5 @@
 <template>
-    <header class="bg-white shadow">
-        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900">
-                Notes :
-            </h1>
-        </div>
-    </header>
+
     <main>
         <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             <button
@@ -48,7 +42,7 @@
                                 style="
                                     border: 1px solid black;
                                     padding: 10px;
-                                    width: 13%;
+                                    width: 14%;
                                 "
                             >
                                 <span>Action</span>
@@ -283,7 +277,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onUpdated } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 import { inject } from "vue";
 import { useRouter } from "vue-router";
 import notesStore from "../store/notes.js";

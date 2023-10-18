@@ -1,12 +1,5 @@
+<!-- js/components/Register.vue -->
 <template>
-    <header class="bg-white shadow">
-        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900">
-                Registration Form
-            </h1>
-        </div>
-    </header>
-
     <main>
         <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             <div class="form_wrapper">
@@ -131,14 +124,17 @@
                                         {{ errors.gender }}
                                     </p>
                                 </div>
+
                                 <div class="input_field multi_select_option">
                                     <select
+                                        id="select2"
+                                        class="select2"
                                         name="interest"
                                         placeholder="interest"
                                         v-model="form.interest"
                                         multiple
                                     >
-                                        <option selected="">
+                                        <option disabled>
                                             Select Interest
                                         </option>
                                         <option value="Singing">Singing</option>
@@ -152,7 +148,7 @@
                                     </p>
                                 </div>
 
-                                <div class="input_field">
+                                <div class="input_field" style="margin-top:80px;">
                                     <span
                                         ><font-awesome-icon icon="camera"
                                     /></span>
@@ -174,6 +170,12 @@
                                     value="Register"
                                 />
                             </form>
+                            <p class="credit">
+                                Allready member?
+                                <router-link to="/login"
+                                    ><b> Login </b></router-link
+                                >
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -187,6 +189,9 @@ import axios from "axios";
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
+import _ from "lodash";
+// import $ from "jquery";
+import Select2 from 'vue3-select2-component';
 const router = useRouter();
 
 const form = ref({
@@ -216,6 +221,7 @@ const handleImageUpload = (event) => {
 };
 
 const register = async () => {
+    console.log(form.value.interest)
     const formData = new FormData();
     formData.append("name", form.value.name + " " + form.value.last_name);
     formData.append("email", form.value.email);
@@ -257,8 +263,37 @@ const register = async () => {
         console.log(error);
     }
 };
+
+const initSelect2 = () => {
+    console.log("jQuery:", jQuery);
+    console.log("Select2 Element:", $("#select2"));
+    jQuery(document).ready(function () {
+        jQuery("#select2").select2({
+            placeholder: "Select an Interest",
+            allowClear: true,
+        });
+    });
+};
+
+onMounted(() => {
+    const script = document.createElement("script");
+    script.src = "https://code.jquery.com/jquery-3.6.0.min.js";
+    script.src =
+        "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js";
+    script.defer = true;
+    initSelect2();
+    document.head.appendChild(script);
+});
 </script>
 
 <style lang="scss" scoped>
 @import "../../css/app.css";
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0px  !important;
+    height: 37px !important;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #1f2937 !important;
+    color: white !important;
+}
 </style>

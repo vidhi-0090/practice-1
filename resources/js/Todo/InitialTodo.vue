@@ -7,8 +7,10 @@
         placeholder="What needs to be done?"
         class="new-todo"
     />
-    <TodoList />
-    <TodoAction />
+    <div style="padding:15px">
+        <TodoList />
+        <TodoAction />
+    </div>
 </template>
 
 <script setup>

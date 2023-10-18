@@ -17,7 +17,7 @@ use Inertia\Inertia;
 */
 
 Route::get('{any}', function () {
-    return view('home');
+    return view('/login');
 })->where('any','.*');
 
 

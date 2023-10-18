@@ -11,6 +11,7 @@ h1 {
 .view {
     width: 100%;
     text-align: left;
+    padding: 1px 5px;
 }
 button.destroy {
     float: right !important;
@@ -26,8 +27,8 @@ li.todo.completed {
 
 ul.todo-list {
     text-align: center;
-    margin-left: 343px;
-    line-height: 32px;
+    margin-left: 329px;
+    line-height: 40px;
     font-size: 18px;
     color: #28292a;
     width: 45%;
@@ -79,4 +80,9 @@ li {
     float: right;
     margin-right: 25px;
     cursor: pointer;
+    padding: 6px 10px;
+    font-size: 16px;
+}
+a[data-v-6280eefe] {
+    margin-left: 5px;
 }

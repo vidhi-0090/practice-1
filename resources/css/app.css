@@ -359,7 +359,14 @@ button.swal2-confirm.swal2-styled {
 
     background-color: #48a537;
 }
-
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0px  !important;
+    height: 37px !important;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #1f2937 !important;
+    color: white !important;
+}
 
 [type='checkbox'][data-v-6280eefe]:focus {
     --tw-ring-color: #2ea528;

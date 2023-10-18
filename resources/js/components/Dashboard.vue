@@ -1,11 +1,64 @@
 <template>
-    <header class="bg-white shadow">
-        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900">
-                Welcome to the Dashboard
-            </h1>
+    <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div class="relative flex h-16 items-center justify-between">
+                <div
+                    class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
+                >
+                    <div class="hidden sm:ml-6 sm:block">
+                        <div class="flex space-x-4">
+                            <router-link
+                                v-if="authStore.getters.getIsAuthenticated != 0"
+                                :to="'/dashboard/' + user_id"
+                                :class="{
+                                    'bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium':
+                                        $route.path.startsWith('/dashboard'),
+                                    'text-gray-300 hover:bg-gray-700 hover-text-white rounded-md px-3 py-2 text-sm font-medium':
+                                        !$route.path.startsWith('/dashboard'),
+                                }"
+                            >
+                                Dashboard
+                            </router-link>
+
+                            <router-link
+                                to="/todo"
+                                :class="{
+                                    'bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium':
+                                        $route.path === '/todo',
+                                    'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium':
+                                        $route.path !== '/todo',
+                                }"
+                            >
+                                ToDo
+                            </router-link>
+
+                            <router-link
+                                v-if="authStore.getters.getIsAuthenticated != 0"
+                                :to="'/notes'"
+                                :class="{
+                                    'bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium':
+                                        $route.path === '/notes',
+                                    'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium':
+                                        $route.path !== '/notes',
+                                }"
+                            >
+                                Notes
+                            </router-link>
+
+                            <button
+                                v-if="authStore.getters.getIsAuthenticated != 0"
+                                @click="logout"
+                                class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </header>
+    </nav>
+
     <main>
         <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             <p>User ID: {{ $route.params.user_id }}</p>
@@ -932,7 +985,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onUpdated } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import Modal from "./Modal.vue";
@@ -940,6 +993,11 @@ import _ from "lodash";
 import DataTable from "datatables.net-dt";
 import Swal from "sweetalert2";
 import "datatables.net-bs4";
+import authStore from "../store/auth.js";
+import { inject } from "vue";
+import notesStore from "../store/notes.js";
+
+const baseUrl = inject("baseUrl");
 
 const showModal = ref(false);
 const showEditModal = ref(false);
@@ -950,8 +1008,7 @@ const router = useRouter();
 
 const username = ref("");
 const email = ref("");
-const user_id = route.params.user_id;
-const baseUrl = "http://127.0.0.1:8000/";
+const user_id = ref(route.params.user_id);
 
 const editName = ref("");
 const editDescription = ref("");
@@ -1006,9 +1063,24 @@ const pagination = ref({});
 
 const datatable = ref(null);
 
+if (localStorage.getItem("token")) {
+    authStore.dispatch("setAuthenticated", localStorage.getItem("token"));
+} else if (!localStorage.getItem("token")) {
+    authStore.dispatch("removeAuthenticated");
+}
+
+const getUserId = async () => {
+    try {
+        const user_data = await axios.get(baseUrl.value + "api/users");
+        user_id.value = user_data.data.data.id;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const setPage = async (p) => {
     try {
-        const user_data = await axios.get(baseUrl + "api/users");
+        const user_data = await axios.get(baseUrl.value + "api/users");
         bookData.value = user_data.data.book;
         bookDataLength.value = bookData.value.length;
     } catch (error) {
@@ -1042,7 +1114,7 @@ const paginator = (totalItems, currentPage) => {
 
 const fetchUser = async () => {
     try {
-        const user_data = await axios.get(baseUrl + "api/users");
+        const user_data = await axios.get(baseUrl.value + "api/users");
         username.value = user_data.data.data.name;
         email.value = user_data.data.data.email;
         bookData.value = user_data.data.book;
@@ -1074,7 +1146,7 @@ const searchData = async () => {
 
 const saveData = async () => {
     try {
-        const response = await axios.post(baseUrl + "api/books", {
+        const response = await axios.post(baseUrl.value + "api/books", {
             name: form.value.name,
             description: form.value.description,
             no_of_page: form.value.no_of_page,
@@ -1118,7 +1190,7 @@ const saveData = async () => {
 const modalOpen = async (id) => {
     bookId.value = id;
     try {
-        const book_data = await axios.get(baseUrl + "api/books/" + id);
+        const book_data = await axios.get(baseUrl.value + "api/books/" + id);
         editName.value = book_data.data.data.name;
         editDescription.value = book_data.data.data.description;
         editCategory.value = book_data.data.data.category;
@@ -1135,7 +1207,7 @@ const modalOpen = async (id) => {
 const editData = async () => {
     try {
         const edit_response = await axios.put(
-            baseUrl + "api/books/" + bookId.value,
+            baseUrl.value + "api/books/" + bookId.value,
             {
                 name: editName.value,
                 description: editDescription.value,
@@ -1187,7 +1259,7 @@ const deleteData = async () => {
     try {
         console.log(bookId.value);
         const delete_res = await axios.delete(
-            baseUrl + "api/books/" + bookId.value
+            baseUrl.value + "api/books/" + bookId.value
         );
         console.log(delete_res);
         if (delete_res.data.status === true) {
@@ -1215,11 +1287,14 @@ const deleteData = async () => {
 
 const changePassword = async () => {
     try {
-        const response = await axios.post(baseUrl + "api/changePassword", {
-            current_password: current_password.value,
-            password: password.value,
-            password_confirmation: password_confirmation.value,
-        });
+        const response = await axios.post(
+            baseUrl.value + "api/changePassword",
+            {
+                current_password: current_password.value,
+                password: password.value,
+                password_confirmation: password_confirmation.value,
+            }
+        );
         if (response.data.status === true) {
             success.value = response.data.message;
             showPasswordModel.value = false;
@@ -1259,7 +1334,7 @@ const initDataTable = () => {
     datatable.value = $(".bookDatatable").DataTable({
         processing: true,
         serverSide: true,
-        ajax: baseUrl + "api/books",
+        ajax: baseUrl.value + "api/books",
         columns: [
             { data: "id", name: "id" },
             { data: "name", name: "name" },
@@ -1305,7 +1380,7 @@ const initDataTable = () => {
 $(document).on("change", "#bookPages", function () {
     var testId = $(this).val();
     datatable.value.ajax
-        .url(baseUrl + "api/serverBooksFilter?value=" + testId)
+        .url(baseUrl.value + "api/serverBooksFilter?value=" + testId)
         .load();
 });
 
@@ -1313,7 +1388,7 @@ $(document).on("change", "#book-Pages", async function () {
     var testId = $(this).val();
     try {
         const response = await axios.get(
-            baseUrl + "api/booksFilter/?value=" + testId
+            baseUrl.value + "api/booksFilter/?value=" + testId
         );
         console.log(response.data.book);
         bookData.value = response.data.book;
@@ -1352,10 +1427,18 @@ document.addEventListener("click", (event) => {
     }
 });
 
+function logout() {
+    authStore.dispatch("removeAuthenticated");
+    notesStore.dispatch("removeNotes", user_id.value);
+    localStorage.clear();
+    router.push("/login");
+}
+
 onMounted(() => {
     fetchUser();
     setPage(1);
     initDataTable();
+    getUserId();
 });
 </script>
 

@@ -1,24 +1,24 @@
 <template>
     <div></div>
-  </template>
+</template>
 
-  <script>
-  import Swal from 'sweetalert2';
+<script>
+import Swal from "sweetalert2";
 
-  export default {
-    props: ['options'],
+export default {
+    props: ["options"],
     watch: {
-      options: {
-        handler(newOptions) {
-          this.showAlert(newOptions);
+        options: {
+            handler(newOptions) {
+                this.showAlert(newOptions);
+            },
+            deep: true,
         },
-        deep: true,
-      },
     },
     methods: {
-      showAlert(options) {
-        Swal.fire(options);
-      },
+        showAlert(options) {
+            Swal.fire(options);
+        },
     },
-  };
-  </script>
+};
+</script>

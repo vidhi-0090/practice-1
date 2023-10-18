@@ -1,11 +1,4 @@
 <template>
-    <header class="bg-white shadow">
-        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900">
-                Login Form
-            </h1>
-        </div>
-    </header>
 
     <main>
         <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
@@ -72,6 +65,14 @@
                                     value="Login"
                                 />
                             </form>
+                            <p class="credit">
+                                Not a member?
+                                <router-link
+                                    to="/register"
+                                ><b>
+                                    Register </b></router-link
+                                >
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -85,13 +86,11 @@ import authStore from "../store/auth.js";
 import { useVuelidate } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
 import axios from "axios";
-import { useStore } from "vuex";
 import Swal from "sweetalert2";
 
 export default {
     setup: () => ({
         v$: useVuelidate(),
-        store: useStore(),
         authStoreInstance: authStore,
     }),
     data: () => ({
